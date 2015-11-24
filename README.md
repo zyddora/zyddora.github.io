@@ -1,8 +1,7 @@
 #Orchid Blog
 
-###[View Orchid Blog &rarr;](http://debuggy.github.io)
+###[View Orchid Blog ](http://debuggy.github.io)
 
-![](http://debuggy.github.io/img/blog-desktop.jpg)
 
 You can clone my blog plate by following command:
 
