@@ -6,7 +6,13 @@ date:       2015-11-24 15:20:00
 author:     "Orchid"
 header-img: "img/post-bg-2015.jpg"
 tags:
-    - 生活
+    - 谈天说地
+    - C++
+    - Linux
+    - 机器学习
+    - 5G/LTE
+    - WLAN
+    - 数学
 ---
 这是我的第一篇博客。
 
