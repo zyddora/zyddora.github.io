@@ -2,10 +2,10 @@
 title: Orchid Blog
 SEOTitle: Orchid Blog
 header-img: img/home-bg.jpg
-email: zydorchid@gmail.com
+email: zyddora@gmail.com
 description: " 这里是 @Orchid张也冬的个人博客。"
 keyword: "张也冬, Orchid张也冬, Orchid, Orchid Blog, 博客, 个人网站, 互联网, 人工智能, 机器学习, 自然语言处理"
-url: "http://debuggy.github.io"              # your host, for absolute URL
+url: "http://zyddora.github.io"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
 
