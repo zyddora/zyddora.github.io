@@ -1,6 +1,6 @@
 #Orchid Blog
 
-###[View Orchid Blog ](http://debuggy.github.io)
+###[View Orchid Blog ](http://zyddora.github.io)
 
 ###Brief Intro
 
