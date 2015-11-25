@@ -9,6 +9,10 @@ tags:
     - 谈天说地
 ---
 
+>语虚 何以言知
+最苦不过熬清静
+
+
 [窦唯自画像](http://7xona3.com1.z0.glb.clouddn.com/douwei-self.jpg "窦唯自画像")
 
 ## 那些年我“错过”的窦唯
