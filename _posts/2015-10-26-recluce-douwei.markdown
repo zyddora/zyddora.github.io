@@ -9,7 +9,7 @@ tags:
     - 谈天说地
 ---
 
-[![alt text](https://github.com/zyddora/zyddora.github.io/blob/master/img/in-post/douwei-self.jpg "窦唯自画像"")]
+![alt text](http://7xona3.com1.z0.glb.clouddn.com/douwei-self.jpg "窦唯自画像"")
 
 ## 那些年我“错过”的窦唯
 
