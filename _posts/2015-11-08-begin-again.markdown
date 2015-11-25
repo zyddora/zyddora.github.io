@@ -9,9 +9,7 @@ tags:
     - 谈天说地
 ---
 
-> Are we all lost stars? Trying to light up the darks. ——《Begin Again》
-
-![img1](/img/in-post/1108riding.jpg)
+> \"Are we all lost stars? Trying to light up the darks.\" ——《Begin Again》
 
 ## 音乐是世界语言
 
