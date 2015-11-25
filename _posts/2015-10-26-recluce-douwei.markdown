@@ -9,7 +9,7 @@ tags:
     - 谈天说地
 ---
 
-![img](/img/post-bg-douwei.jpg)
+![img](/img/in-post/douwei-self.jpg)
 
 
 ## 那些年我“错过”的窦唯
