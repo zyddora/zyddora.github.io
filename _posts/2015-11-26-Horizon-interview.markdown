@@ -4,7 +4,7 @@ title:      "A Memorable Interview"
 subtitle:   " \"I must keep trying and working hard.\""
 date:       2015-11-26 21:43:00
 author:     "Orchid"
-header-img: "img/post-bg-code.jpg"
+header-img: "img/post-bg-office.jpg"
 tags:
     - 求职
     - C++
