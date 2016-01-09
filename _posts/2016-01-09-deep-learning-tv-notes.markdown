@@ -12,6 +12,20 @@ tags:
 
 这是学习[Deep Learning.tv - Deep Learning SIMPLIFIED](https://www.youtube.com/channel/UC9OeZkIwhzfv-_Cb7fCikLQ)的系列视频，自己总结出的学习笔记。
 
+## Catalog
+
+1.  [our choice of Deep Net - Ep. 4](#our--4)
+2.  [An Old Problem - Ep. 5](#an--old--problem--Ep.--5)
+3.  [Restricted Boltzmann Machines - Ep. 6](#restricted--boltzmann--machines--Ep.--6)
+4.  [Deep Belief Nets - Ep. 7](#seajs--cmd)
+5.  [Convolutional Nets – Ep. 8](#amd-vs-cmd)
+6.  [Recurrent Nets - Ep. 9](#Recurrent Nets - Ep. 9)
+7.  [Autoencoders - Ep. 10](#Autoencoders - Ep. 10)
+8.  [Recursive Neural Tensor Nets – Ep. 11]
+9.  [Use Cases - Ep. 12]
+
+
+
 ## our choice of Deep Net - Ep. 4
 
 1. Unlabeled: 
@@ -31,7 +45,7 @@ Speech Recognition, use: **Recurrent Net**.
 
 ---
 
-## (RBM) Restricted Boltzmann Machines - Ep. 6
+## Restricted Boltzmann Machines - Ep. 6
 
 \"What allowed to overcome vanishing gradient? \" --- 2 parts
 
