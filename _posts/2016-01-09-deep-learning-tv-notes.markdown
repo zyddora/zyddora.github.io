@@ -14,7 +14,7 @@ tags:
 
 ## Catalog
 
-1.  [our choice of Deep Net - Ep. 4](#our-choice-of-deep-net--ep.-4)
+1.  [our choice of Deep Net - Ep. 4](#our-choice-of-deep-net-ep4)
 2.  [An Old Problem - Ep. 5](#an--old--problem--Ep.--5)
 3.  [Restricted Boltzmann Machines - Ep. 6](#restricted--boltzmann--machines--Ep.--6)
 4.  [Deep Belief Nets - Ep. 7](#seajs--cmd)
@@ -26,7 +26,7 @@ tags:
 
 
 
-## our choice of Deep Net - Ep. 4
+## our choice of Deep Net Ep4
 
 1. Unlabeled: 
 feature extraction; unsupervised learning; pattern recognition, use **RBM; Autoencoders**.
