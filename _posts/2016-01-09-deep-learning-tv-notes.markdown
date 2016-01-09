@@ -12,17 +12,17 @@ tags:
 
 这是学习[Deep Learning.tv - Deep Learning SIMPLIFIED](https://www.youtube.com/channel/UC9OeZkIwhzfv-_Cb7fCikLQ)的系列视频，自己总结出的学习笔记。
 
-## Catalog
+### Catalog
 
-1.  [our choice of Deep Net - Ep. 4](#our-choice-of-deep-net-ep4)
-2.  [An Old Problem - Ep. 5](#an--old--problem--Ep.--5)
-3.  [Restricted Boltzmann Machines - Ep. 6](#restricted--boltzmann--machines--Ep.--6)
-4.  [Deep Belief Nets - Ep. 7](#seajs--cmd)
-5.  [Convolutional Nets – Ep. 8](#amd-vs-cmd)
-6.  [Recurrent Nets - Ep. 9](#Recurrent Nets - Ep. 9)
-7.  [Autoencoders - Ep. 10](#Autoencoders - Ep. 10)
-8.  [Recursive Neural Tensor Nets – Ep. 11]
-9.  [Use Cases - Ep. 12]
+1.  [our choice of Deep Net Ep4](#our-choice-of-deep-net-ep4)
+2.  [An Old Problem Ep5](#an-old-problem-ep5)
+3.  [Restricted Boltzmann Machines Ep6](#restricted-boltzmann-machines-ep6)
+4.  [Deep Belief Nets Ep7](#deep-belief-nets-ep7)
+5.  [Convolutional Nets Ep8](#cnvolutional-nets-ep8)
+6.  [Recurrent Nets Ep9](#recurrent-nets-ep9)
+7.  [Autoencoders Ep10](#autoencoders-ep10)
+8.  [Recursive Neural Tensor Nets Ep11](#recursive-neural-tensor-nets-ep11)
+9.  [Use Cases Ep12](#use-cases-ep12)
 
 
 
@@ -39,13 +39,13 @@ Speech Recognition, use: **Recurrent Net**.
 
 ---
 
-## An Old Problem - Ep. 5
+## An Old Problem Ep5
 
 **Back propagation** occurs a **vanishing gradient problem**---training takes too long and accuracy suffers. The gradients are much smaller in the earlier layers, as a result, these layers are the slowest to train.
 
 ---
 
-## Restricted Boltzmann Machines - Ep. 6
+## Restricted Boltzmann Machines Ep6
 
 \"What allowed to overcome vanishing gradient? \" --- 2 parts
 
@@ -67,7 +67,7 @@ An RBM is actually making decisions about which input features are important and
 
 ---
 
-## Deep Belief Nets - Ep. 7
+## Deep Belief Nets Ep7
 
 \"What allowed to overcome vanishing gradient? \" --- 2 parts
 
@@ -89,7 +89,7 @@ It works globally be fine tuning the entire input in succession as the model slo
 
 ---
 
-## Convolutional Nets – Ep. 8
+## Convolutional Nets Ep8
 
 **CNN (Convolutional neural net)**: by Yann Lecun of NYU, **dominant solution in image recognition**.
 
@@ -109,7 +109,7 @@ Together, these 3 layers can discover a host of complex patterns, but the net wi
 
 ---
 
-## Recurrent Nets - Ep. 9
+## Recurrent Nets Ep9
 
 If the patterns in data change with time, use a recurrent neural network.  
 **Recurrent Neural Network (RNN)**: by Juergen Schmidhuber, Sepp Hochreiter, and Alex Graves. 
@@ -147,7 +147,7 @@ GPUs are an obvious choice to train a recurrent net.
 
 ---
 
-## Autoencoders - Ep. 10
+## Autoencoders Ep10
 
 Figure out the underlying structure of a data set, extract the features is useful when you start applying labels. **Autoencoders** are well suited for this task. (feature extraction engine)
 
@@ -163,7 +163,7 @@ Autoencoders are trained with back-prop using a metric called **\"loss\"**, whic
 
 ---
 
-## Recursive Neural Tensor Nets – Ep. 11
+## Recursive Neural Tensor Nets Ep11
 
 **RNTNs**: by Richard Socher [@MetaMind](https://www.metamind.io/). To discover the hierarchical structure of a set of data, such as the parse trees of a group of sentences. They were designed for **sentiment analysis**.
 
@@ -180,7 +180,7 @@ They are also used to **parse images**, when an image contains a scene with many
 
 ---
 
-## Use Cases - Ep. 12
+## Use Cases Ep12
 
 * Machine vision; 
 Image classification; Object Recognition; Video Recognition; Speech Recognition; 
