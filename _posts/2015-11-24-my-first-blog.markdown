@@ -7,12 +7,6 @@ author:     "Orchid"
 header-img: "img/post-bg-2015.jpg"
 tags:
     - 谈天说地
-    - C++
-    - Linux
-    - 机器学习
-    - 5G/LTE
-    - WLAN
-    - 数学
 ---
 
 ## 重新启程
