@@ -11,6 +11,7 @@ tags:
 ---
 
 这是学习[Deep Learning.tv - Deep Learning SIMPLIFIED](https://www.youtube.com/channel/UC9OeZkIwhzfv-_Cb7fCikLQ)的系列视频，自己总结出的学习笔记。
+**转载请注明：“转载自zyddora.github.io”**
 
 ### Catalog
 
