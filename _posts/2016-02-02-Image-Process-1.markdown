@@ -11,7 +11,6 @@ tags:
 ---
 
 最近做了些与图像处理相关的内容，
-**转载请注明：“转载自zyddora.github.io”**
 
 ### Catalog
 
