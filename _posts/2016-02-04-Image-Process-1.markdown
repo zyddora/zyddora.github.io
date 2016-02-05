@@ -85,6 +85,7 @@ tags:
 ### **基本操作**
 
 OpenCV通过结构体`IplImage`存储图片的信息，通过指向`IplImage`的指针对图片进行操作。
+
 ```cpp
 	typedef struct _IplImage
 	{
@@ -120,6 +121,7 @@ OpenCV通过结构体`IplImage`存储图片的信息，通过指向`IplImage`的
                                  needed for correct deallocation */
     }IplImage;
 ```
+
 其中，比较重要的成员为：
 - `int nChannels`：图像通道数，如RGB为3，RGBA为4，YUV为1。
 - `int depth`：图像深度，即各像素的数值类型，如IPL_DEPTH_8U为8bits unsigned char，其余支持类型见上述代码说明。
@@ -130,12 +132,14 @@ OpenCV通过结构体`IplImage`存储图片的信息，通过指向`IplImage`的
 - `int widthStep`：图像宽度步长。需要特别注意的值，因为图像每行需要内存对齐，所以`width`和`widthStep`是不同的。比如：`width = 311, widthStep = 312`，我自己测试在x86上widthStep必须是4的倍数。此概念对于操作图像具体像素值是非常重要的。
 
 **读取图片**
+
 ```cpp
     funtion: CVAPI(IplImage*) cvLoadImage( const char* filename, int iscolor CV_DEFAULT(CV_LOAD_IMAGE_COLOR));
     example: IplImage *test_ori = cvLoadImage(argv[1], 1);
 ```
 
 **创建图片**
+
 ```cpp
     function: CVAPI(IplImage*)  cvCreateImage( CvSize size, int depth, int channels );
     example: IplImage *rec_ori = cvCreateImage(cvSize(cvwidth, cvheight), IPL_DEPTH_8U, 3);
