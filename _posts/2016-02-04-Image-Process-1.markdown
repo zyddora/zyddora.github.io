@@ -84,14 +84,67 @@ tags:
 
 ### **基本操作**
 
-#### 读取图片
-
+OpenCV通过结构体`IplImage`存储图片的信息，通过指向`IplImage`的指针对图片进行操作。
 ```cpp
-funtion: cvLoadImage(const char* filename, int iscolor = 1)
+typedef struct _IplImage
+{
+    int  nSize;             /* sizeof(IplImage) */
+    int  ID;                /* version (=0)*/
+    int  nChannels;         /* Most of OpenCV functions support 1,2,3 or 4 channels */
+    int  alphaChannel;      /* Ignored by OpenCV */
+    int  depth;             /* Pixel depth in bits: IPL_DEPTH_8U, IPL_DEPTH_8S, IPL_DEPTH_16S,
+                               IPL_DEPTH_32S, IPL_DEPTH_32F and IPL_DEPTH_64F are supported.  */
+    char colorModel[4];     /* Ignored by OpenCV */
+    char channelSeq[4];     /* ditto */
+    int  dataOrder;         /* 0 - interleaved color channels, 1 - separate color channels.
+                               cvCreateImage can only create interleaved images */
+    int  origin;            /* 0 - top-left origin,
+                               1 - bottom-left origin (Windows bitmaps style).  */
+    int  align;             /* Alignment of image rows (4 or 8).
+                               OpenCV ignores it and uses widthStep instead.    */
+    int  width;             /* Image width in pixels.                           */
+    int  height;            /* Image height in pixels.                          */
+    struct _IplROI *roi;    /* Image ROI. If NULL, the whole image is selected. */
+    struct _IplImage *maskROI;      /* Must be NULL. */
+    void  *imageId;                 /* "           " */
+    struct _IplTileInfo *tileInfo;  /* "           " */
+    int  imageSize;         /* Image data size in bytes
+                               (==image->height*image->widthStep
+                               in case of interleaved data)*/
+    char *imageData;        /* Pointer to aligned image data.         */
+    int  widthStep;         /* Size of aligned image row in bytes.    */
+    int  BorderMode[4];     /* Ignored by OpenCV.                     */
+    int  BorderConst[4];    /* Ditto.                                 */
+    char *imageDataOrigin;  /* Pointer to very origin of image data
+                               (not necessarily aligned) -
+                               needed for correct deallocation */
+}
+IplImage;
+```
+其中，比较重要的成员为：
+- `int nChannels`：图像通道数，如RGB为3，RGBA为4，YUV为1。
+- `int depth`：图像深度，即各像素的数值类型，如IPL_DEPTH_8U为8bits unsigned char，其余支持类型见上述代码说明。
+- `int width`：图像宽度。
+- `int height`：图像高度。
+- `int imageSize`：图像占用字节数，即`height * widthStep`。
+- `char *imageData`：指向图像数据的`char`型指针。
+- `int widthStep`：图像宽度步长。需要特别注意的值，因为图像每行需要内存对齐，所以`width`和`widthStep`是不同的。比如：`width = 311, widthStep = 312`，我自己测试在x86上widthStep必须是4的倍数。此概念对于操作图像具体像素值是非常重要的。
+
+**读取图片**
+```cpp
+funtion: CVAPI(IplImage*) cvLoadImage( const char* filename, int iscolor CV_DEFAULT(CV_LOAD_IMAGE_COLOR));
 example: IplImage *test_ori = cvLoadImage(argv[1], 1);
 ```
 
+**创建图片**
+```cpp
+function: CVAPI(IplImage*)  cvCreateImage( CvSize size, int depth, int channels );
+example: IplImage *rec_ori = cvCreateImage(cvSize(cvwidth, cvheight), IPL_DEPTH_8U, 3);
+```
+其中，`CvSize`也是一个结构体，通过`cvSize(int width, int height)`设置其内部的宽、长变量值。
+`depth`是图像的深度，即各像素的数值类型，
 
+****
 
 ---
 
