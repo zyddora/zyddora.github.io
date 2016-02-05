@@ -28,8 +28,8 @@ tags:
 2. 步骤
 * 安装OpenCV并解压缩
 * 配置环境变量
-	1. 系统变量PATH：e.g. `E:\opencv\build\x86\vc12\bin`
-	2. 用户变量
+	2.1 系统变量PATH：e.g. `E:\opencv\build\x86\vc12\bin`
+	2.2 用户变量
 		添加opencv变量：e.g. `E:\opencv\build`
 
 ---
