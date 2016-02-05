@@ -16,9 +16,9 @@ tags:
 
 ### Catalog
 
-1.  [OpenCV2.4.10 + Win10 VS2015的安装配置](#opencv2410--win10-vs2015)
-2.  [OpenCV基本用法](#opencv)
-3.  [RGB/YUV色彩空间](#rgbyuv)
+1. [OpenCV2.4.10 + Win10 VS2015的安装配置](#opencv2410--win10-vs2015)
+2. [OpenCV基本用法](#opencv)
+3. [RGB/YUV色彩空间](#rgbyuv)
 
 ## OpenCV2.4.10 + Win10 VS2015的安装配置
 
@@ -166,11 +166,39 @@ function: CVAPI(void)  cvCvtColor( const CvArr* src, CvArr* dst, int code );
 example: cvCvtColor(test_ori, cvt_yuv422, CV_BGR2YUV);
 ```
 
+注：cvCvtColor函数虽然提供了多种自带转换，但不提供BGR-->YUV422I(YUY2、YUNV、YUYV、V422)的转换，反而提供YUV422I-->BGR的转换。此处，YUV422I是Android常用的图片格式，但如若进行图像处理，则一般需要转换成RGB。
 
+**分通道显示图像**
 
+```cpp
+function: void cvSplit(const CvArr* src,CvArr *dst0,CvArr *dst1, CvArr *dst2, CvArr *dst3);
+example: 
+for (int i = 0; i < test_ori->nChannels; ++i) {
+  imgChannel_[i] = cvCreateImage(cvGetSize(test_ori), test_ori->depth, 1);
+}
+
+cvSplit(test_ori, imgChannel_[0], imgChannel_[1], imgChannel_[2], 0);
+
+cvShowImage("B_", imgChannel_[0]);
+cvShowImage("G_", imgChannel_[1]);
+cvShowImage("R_", imgChannel_[2]);
+```
+
+注：通常情况下，通道小于4，则可以填0或NULL以补全。显示每个通道时，也是灰色图像，如果要以蓝、绿、红色展示，有其他方法，但我个人感觉并不需要，因为颜色只是一种直观的判断方法，但是具体还是其中的数值。
+
+### 其他
+
+**图像数值显示**：一般的RGB、YUV或者灰度图像基本都是以8bits unsigned char的形式存储，范围在0~255之间。在做图像转换、恢复时，经常需要检查具体图像数据，因此建议以十六进制显示为佳。显示方式如下：
+
+```cpp
+printf("0x%.2x", x1); // x1为某数值
+```
 ---
 
 ## RGB/YUV色彩空间
+
+
+
 
 ![img](/img/in-post/post-DLS/RBM_structure.png)
 
