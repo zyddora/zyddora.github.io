@@ -56,14 +56,13 @@ tags:
 
  - 测试代码
 
- 『% codeblock [test opencv] [lang:c++] [url] [link text] %』
-	#include <cv.h>
-	#include <highgui.h>
+    #include <cv.h>
+    #include <highgui.h>
 
-	using namespace std;
+    using namespace std;
 
-	int main()
-	{
+    int main()
+    {
 	  IplImage * test;
 	  test = cvLoadImage("D:\\Sample_8.bmp");//路径，注意加双\\转义字符
 	  cvNamedWindow("test_demo", 1);
@@ -74,7 +73,6 @@ tags:
 	  system("pause");
 	  return 0;
 	}
-『% endcodeblock %』
 ---
 
 ### OpenCV基本用法
