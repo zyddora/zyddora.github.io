@@ -47,10 +47,10 @@ tags:
 		+ 按顺序找到 Common Properties - Linker - Input - Addtional Dependencies，添加`E:\opencv\build\x86\vc12\lib`中的所有后缀带`d`的文件名。示例：
 
 ```
-	opencv_calib3d2410d.lib
-	opencv_contrib2410d.lib
-	opencv_core2410d.lib
-	......
+opencv_calib3d2410d.lib
+opencv_contrib2410d.lib
+opencv_core2410d.lib
+......
 ```
 
 ### **工程目录的配置（Release）**
@@ -134,18 +134,32 @@ typedef struct _IplImage
 **读取图片**
 
 ```cpp
-    funtion: CVAPI(IplImage*) cvLoadImage( const char* filename, int iscolor CV_DEFAULT(CV_LOAD_IMAGE_COLOR));
-    example: IplImage *test_ori = cvLoadImage(argv[1], 1);
+funtion: CVAPI(IplImage*) cvLoadImage( const char* filename, int iscolor CV_DEFAULT(CV_LOAD_IMAGE_COLOR));
+example: IplImage *test_ori = cvLoadImage(argv[1], 1);
 ```
 
 **创建图片**
 
 ```cpp
-    function: CVAPI(IplImage*)  cvCreateImage( CvSize size, int depth, int channels );
-    example: IplImage *rec_ori = cvCreateImage(cvSize(cvwidth, cvheight), IPL_DEPTH_8U, 3);
+function: CVAPI(IplImage*)  cvCreateImage( CvSize size, int depth, int channels );
+example: IplImage *rec_ori = cvCreateImage(cvSize(cvwidth, cvheight), IPL_DEPTH_8U, 3);
 ```
 
-****
+**显示图片**
+
+```cpp
+function: CVAPI(void) cvShowImage( const char* name, const CvArr* image );
+example: cvShowImage("recover", rec_ori);
+```
+
+**转换图片色彩空间**
+
+```cpp
+funtion: CVAPI(void)  cvCvtColor( const CvArr* src, CvArr* dst, int code );
+example: cvCvtColor(test_ori, cvt_yuv422, CV_BGR2YUV);
+```
+
+
 
 ---
 
