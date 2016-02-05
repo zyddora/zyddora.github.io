@@ -44,12 +44,12 @@ tags:
 		* 按照顺序找到 Common Properties - VC++ Directories - Library Directories，添加`E:\opencv\build\x86\vc12\lib`。
 		* 按照顺序找到 Common Properties - Linker - Input - Addtional Dependencies，添加`E:\opencv\build\x86\vc12\lib`中的所有后缀带`d`的文件名。示例：
 
-		``
+		`
 		opencv_calib3d2410d.lib
 		opencv_contrib2410d.lib
 		opencv_core2410d.lib
 		......
-		``
+		`
 
 
 ---
