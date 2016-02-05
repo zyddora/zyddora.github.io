@@ -28,6 +28,7 @@ tags:
 ### **环境变量配置**
 安装OpenCV并解压缩
 配置环境变量
+
 - 系统变量PATH：e.g. `E:\opencv\build\x86\vc12\bin`
 - 用户变量：
 	* 添加opencv变量：e.g. `E:\opencv\build`
@@ -37,11 +38,13 @@ tags:
 ### **在VS中新建项目**
 选择Visual C++中Win32 Console Application（Win32 控制台应用程序）进行创建
 进入Win32应用程序向导
+
 * 应用程序类型：选择控制台应用程序
 * 附加选项：空项目、预编译头
 
 ### **工程目录的配置（Debug）**
 在窗口右侧上栏找到`Property Manager（属性管理器）`，双击`Debug | Win32`
+
 * 按顺序找到 Common Properties - VC++ Directories - Include Directories，添加`E:\opencv\build\include`，`E:\opencv\build\include\opencv`，`E:\opencv\build\include\opencv2`。
 * 按顺序找到 Common Properties - VC++ Directories - Library Directories，添加`E:\opencv\build\x86\vc12\lib`。
 * 按顺序找到 Common Properties - Linker - Input - Addtional Dependencies，添加`E:\opencv\build\x86\vc12\lib`中的所有后缀带`d`的文件名。示例：
