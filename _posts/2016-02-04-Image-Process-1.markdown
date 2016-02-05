@@ -203,6 +203,7 @@ printf("0x%.2x", x1); // x1为某数值
 
 接收端： 解码得到YUV --> 转换YUV到RGB ---> 进一步处理
 
+$$
 \begin{bmatrix}
 Y\\ 
 U\\ 
@@ -216,7 +217,7 @@ R\\
 G\\ 
 B
 \end{bmatrix}
-
+$$
 
 
 
