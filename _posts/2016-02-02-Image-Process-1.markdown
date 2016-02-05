@@ -14,7 +14,7 @@ tags:
 
 ### Catalog
 
-1.  [our choice of Deep Net Ep4](#our-choice-of-deep-net-ep4)
+1.  [OpenCV2.4.10在Win10下的安装](#our-choice-of-deep-net-ep4)
 2.  [An Old Problem Ep5](#an-old-problem-ep5)
 3.  [Restricted Boltzmann Machines Ep6](#restricted-boltzmann-machines-ep6)
 4.  [Deep Belief Nets Ep7](#deep-belief-nets-ep7)
@@ -26,7 +26,7 @@ tags:
 
 
 
-## our choice of Deep Net Ep4
+## OpenCV2.4.10在Win10下的安装
 
 1. Unlabeled: 
 feature extraction; unsupervised learning; pattern recognition, use **RBM; Autoencoders**.
