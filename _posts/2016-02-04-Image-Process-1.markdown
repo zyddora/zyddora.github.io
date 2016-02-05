@@ -62,6 +62,7 @@ tags:
     #include <cv.h>
     #include <highgui.h>
 
+    using namespace cv;
     using namespace std;
 
     int main()
@@ -83,12 +84,13 @@ tags:
 
 ### **基本操作**
 
-1. 读取图片
+#### 读取图片
+
 ```cpp
 funtion: cvLoadImage(const char* filename, int iscolor = 1)
 example: IplImage *test_ori = cvLoadImage(argv[1], 1);
 ```
-2. 
+
 
 
 ---
