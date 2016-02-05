@@ -15,7 +15,7 @@ tags:
 
 ### Catalog
 
-1.  [OpenCV2.4.10 + Win10 VS2015的安装配置](#opencv2410-win10-vs2015)
+1.  [OpenCV2.4.10 + Win10 VS2015的安装配置](#opencv2410--win10-vs2015)
 2.  [OpenCV基本用法](#opencv)
 3.  [RGB/YUV色彩空间](#rgbyuv)
 
@@ -54,7 +54,7 @@ tags:
 ```
 
 ### **工程目录的配置（Release）**
- - 类似地，双击'Release | Win32'，按照顺序找到 Common Properties - Linker - Input - Addtional Dependencies，添加`E:\opencv\build\x86\vc12\lib`中的所有后缀 **不带`d`** 的文件名。
+ - 类似地，双击`Release | Win32`，按照顺序找到 Common Properties - Linker - Input - Addtional Dependencies，添加`E:\opencv\build\x86\vc12\lib`中的所有后缀 **不带`d`** 的文件名。
 
 ### **测试代码**
 
