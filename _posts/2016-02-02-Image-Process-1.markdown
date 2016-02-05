@@ -9,36 +9,32 @@ tags:
     - OpenCV
     - 图像处理
 ---
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
 最近做了些与图像处理相关的内容，
 
 ### Catalog
 
 1.  [OpenCV2.4.10在Win10 VS2015下的安装](#opencv2410win10-vs2015)
-2.  [An Old Problem Ep5](#an-old-problem-ep5)
-3.  [Restricted Boltzmann Machines Ep6](#restricted-boltzmann-machines-ep6)
-4.  [Deep Belief Nets Ep7](#deep-belief-nets-ep7)
-5.  [Convolutional Nets Ep8](#cnvolutional-nets-ep8)
-6.  [Recurrent Nets Ep9](#recurrent-nets-ep9)
-7.  [Autoencoders Ep10](#autoencoders-ep10)
-8.  [Recursive Neural Tensor Nets Ep11](#recursive-neural-tensor-nets-ep11)
-9.  [Use Cases Ep12](#use-cases-ep12)
+2.  [OpenCV基本用法](#opencv)
+3.  [RGB/YUV色彩空间](#rgbyuv)
 
 
 
 ## OpenCV2.4.10在Win10 VS2015下的安装
 
+$$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
+
+\\(x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\\)
 
 ---
 
-## An Old Problem Ep5
+## OpenCV基本用法
 
 
 ---
 
-## Restricted Boltzmann Machines Ep6
-
-\"What allowed to overcome vanishing gradient? \" --- 2 parts
+## RGB/YUV色彩空间
 
 The 1st part: **RBM**, by Geoff Hinton.
 
