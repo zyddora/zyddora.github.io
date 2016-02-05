@@ -59,24 +59,24 @@ tags:
 ### **测试代码**
 
 ```cpp
-    #include <cv.h>
-    #include <highgui.h>
+#include <cv.h>
+#include <highgui.h>
 
-    using namespace cv;
-    using namespace std;
+using namespace cv;
+using namespace std;
 
-    int main()
-    {
-	  IplImage * test;
-	  test = cvLoadImage("D:\\Sample_8.bmp");//路径，注意加双斜杠转义
-	  cvNamedWindow("test_demo", 1);
-	  cvShowImage("test_demo", test);
-	  cvWaitKey(0);
-	  cvDestroyWindow("test_demo");
-	  cvReleaseImage(&test);
-	  system("pause");
-	  return 0;
-    }
+int main()
+{
+	IplImage * test;
+	test = cvLoadImage("D:\\Sample_8.bmp");//路径，注意加双斜杠转义
+	cvNamedWindow("test_demo", 1);
+	cvShowImage("test_demo", test);
+	cvWaitKey(0);
+	cvDestroyWindow("test_demo");
+	cvReleaseImage(&test);
+	system("pause");
+	return 0;
+}
 ```
 ---
 
