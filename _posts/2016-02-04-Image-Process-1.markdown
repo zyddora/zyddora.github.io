@@ -74,7 +74,7 @@ tags:
 	  cvDestroyWindow("test_demo");
 	  cvReleaseImage(&test);
 	  system("pause");
-      return 0;
+	  return 0;
     }
 ```
 ---
