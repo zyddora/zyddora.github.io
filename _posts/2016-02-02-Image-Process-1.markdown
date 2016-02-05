@@ -55,25 +55,26 @@ tags:
  	+ 类似地，双击'Release | Win32'，按照顺序找到 Common Properties - Linker - Input - Addtional Dependencies，添加`E:\opencv\build\x86\vc12\lib`中的所有后缀 **不带`d`** 的文件名。
 
  - 测试代码
- ```c++
- #include <cv.h>
- #include <highgui.h>
 
- using namespace std;
+ 『% codeblock [test opencv] [lang:c++] [url] [link text] %』
+	#include <cv.h>
+	#include <highgui.h>
 
- int main()
- {
-   IplImage * test;
-   test = cvLoadImage("D:\\Sample_8.bmp");//路径，注意加双\\转义字符
-   cvNamedWindow("test_demo", 1);
-   cvShowImage("test_demo", test);
-   cvWaitKey(0);
-   cvDestroyWindow("test_demo");
-   cvReleaseImage(&test);
-   system("pause");
-   return 0;
- }
- ```
+	using namespace std;
+
+	int main()
+	{
+	  IplImage * test;
+	  test = cvLoadImage("D:\\Sample_8.bmp");//路径，注意加双\\转义字符
+	  cvNamedWindow("test_demo", 1);
+	  cvShowImage("test_demo", test);
+	  cvWaitKey(0);
+	  cvDestroyWindow("test_demo");
+	  cvReleaseImage(&test);
+	  system("pause");
+	  return 0;
+	}
+『% endcodeblock %』
 ---
 
 ### OpenCV基本用法
