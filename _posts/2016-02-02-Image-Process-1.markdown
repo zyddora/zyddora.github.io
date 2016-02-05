@@ -4,7 +4,7 @@ title:      "图像处理初探整理"
 subtitle:   ""
 date:       2016-02-02 19:57:00
 author:     "Orchid"
-header-img: "img/post-bg-AI.jpg"
+header-img: "img/post-bg-img.jpg"
 tags:
     - OpenCV
     - 图像处理
@@ -14,7 +14,7 @@ tags:
 
 ### Catalog
 
-1.  [OpenCV2.4.10在Win10下的安装](#our-choice-of-deep-net-ep4)
+1.  [OpenCV2.4.10在Win10 VS2015下的安装](#opencv2410win10-vs2015)
 2.  [An Old Problem Ep5](#an-old-problem-ep5)
 3.  [Restricted Boltzmann Machines Ep6](#restricted-boltzmann-machines-ep6)
 4.  [Deep Belief Nets Ep7](#deep-belief-nets-ep7)
@@ -26,22 +26,13 @@ tags:
 
 
 
-## OpenCV2.4.10在Win10下的安装
+## OpenCV2.4.10在Win10 VS2015下的安装
 
-1. Unlabeled: 
-feature extraction; unsupervised learning; pattern recognition, use **RBM; Autoencoders**.
-
-2. Labeled:
-Text processing (sentiment analysis; parsing; named entity recognition), use: **RNTN (Recursive Neural Tensor Network)** or **RNN (Recurrent Net)**, especially for language model works on character level.
-Image Recognition, use: **DBN (Deep Belief Network) or CNN (Convolutional Net)**.
-Object Recognition, use: **RNTN or Convolutional Net**.
-Speech Recognition, use: **Recurrent Net**.
 
 ---
 
 ## An Old Problem Ep5
 
-**Back propagation** occurs a **vanishing gradient problem**---training takes too long and accuracy suffers. The gradients are much smaller in the earlier layers, as a result, these layers are the slowest to train.
 
 ---
 
