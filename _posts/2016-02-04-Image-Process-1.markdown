@@ -11,7 +11,8 @@ tags:
 ---
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
-> 近日做了些与OpenCV、图像处理相关的工程，两个周的时间收获了挺多，故将涉及到的内容进行整理，方便以后查阅，共同学习。本文主要介绍OpenCV使用、图像格式相关的内容。
+> 近日做了些与OpenCV、图像处理相关的工程，两个周的时间收获了挺多，故将涉及到的内容进行整理，方便以后查阅，共同学习。
+> 本文主要介绍OpenCV使用、图像格式相关的内容。
 
 ### Catalog
 
