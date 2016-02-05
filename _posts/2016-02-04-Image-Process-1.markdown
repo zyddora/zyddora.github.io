@@ -197,7 +197,17 @@ printf("0x%.2x", x1); // x1为某数值
 
 ## RGB/YUV色彩空间
 
+**一般的图像传输流程（以YUV传输为例）**
 
+```flow
+op1=>operation: 彩色图像
+op2=>operation: 分色后放大校正得到RGB图像
+op3=>operation: 矩阵变换
+op4=>operation: 得到YUV
+op5=>operation: 将三信号分别编码发送
+
+op1->op2->op3->op4->op5
+```
 
 
 ![img](/img/in-post/post-DLS/RBM_structure.png)
