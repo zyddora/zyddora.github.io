@@ -200,9 +200,22 @@ printf("0x%.2x", x1); // x1为某数值
 **一般的图像传输流程（以YUV传输为例）**
 
 发送端： 彩色图像 --> 分色后放大校正得到RGB图像 --> 矩阵变换 --> 得到YUV --> 将三信号分别编码发送
+
 接收端： 解码得到YUV --> 转换YUV到RGB ---> 进一步处理
 
-
+\begin{bmatrix}
+Y\\ 
+U\\ 
+V
+\end{bmatrix}=\begin{bmatrix}
+0.299 & 0.587 & 0.114\\ 
+-0.147 & -0.289 & 0.436\\ 
+0.615 & -0.515 & -0.100
+\end{bmatrix}\begin{bmatrix}
+R\\ 
+G\\ 
+B
+\end{bmatrix}
 
 
 
