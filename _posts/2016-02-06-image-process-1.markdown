@@ -2,7 +2,7 @@
 layout:     post
 title:      "图像处理初探"
 subtitle:   ""
-date:       2016-02-07 11:58:00
+date:       2016-02-06 11:00:00
 author:     "Orchid"
 header-img: "img/post-bg-img.jpg"
 tags:
