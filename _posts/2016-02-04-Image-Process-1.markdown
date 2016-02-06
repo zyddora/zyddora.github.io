@@ -278,6 +278,23 @@ Vu = \left ( \left ( V + 128 \right )\gg 8 \right ) + 128
 \end{matrix}
 $$
 
+**YUV --> RGB**
+
+$$
+\begin{matrix}
+C = Y - 16\\ 
+D = U - 128\\ 
+E = V - 128
+\end{matrix}
+$$
+
+$$
+\begin{matrix}
+R = clamp\left ( \left ( 298 \times C \qquad \qquad \quad + 409 \times E + 128  \right ) \gg 8 \right )\\ 
+G = clamp\left ( \left ( 298 \times C - 100 \times D - 208 \times E + 128 \right ) \gg 8 \right )\\ 
+B = clamp\left ( \left ( 298 \times C + 516 \times D \qquad \qquad \quad + 128 \right ) \gg 8 \right )
+\end{matrix}
+$$
 
 
 
