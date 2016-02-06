@@ -296,6 +296,10 @@ B = clamp\left ( \left ( 298 \times C + 516 \times D \qquad \qquad \quad + 128 \
 \end{matrix}
 $$
 
+注：\\(clamp\left (  \right ) \\)指将括号内数值整形至0~255之间。
+
+
+
 
 
 ## 几种图像格式
