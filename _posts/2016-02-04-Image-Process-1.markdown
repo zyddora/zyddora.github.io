@@ -19,6 +19,7 @@ tags:
 1. [OpenCV2.4.10 + Win10 VS2015的安装配置](#opencv2410--win10-vs2015)
 2. [OpenCV基本用法](#opencv)
 3. [RGB/YUV色彩空间](#rgbyuv)
+4. [几种图像格式](#)
 
 ## OpenCV2.4.10 + Win10 VS2015的安装配置
 
@@ -251,6 +252,36 @@ $$
 
 注：上述转换标准是SDTV with BT.601（ITU-R Recommendation BT.601）所规范的，是较为被普遍使用的一种，当然还有其他规范。依旧是线性变换，但区别在于具体参数不同。
 
+### 数值近似
+
+在众多的SIMD中，受限于计算性能要求，并不直接采用上述浮点数计算，而是用整数替代，2次幂的乘法、除法则用左移<<、右移>>来实现。
+
+**RGB --> YUV**
+
+$$
+\begin{bmatrix}
+{Y}'\\ U\\ V
+\end{bmatrix}=
+\begin{bmatrix}
+66 & 129 & 25\\ -38 & -74 & 112\\ 112 & -94 & -18
+\end{bmatrix}
+\begin{bmatrix}
+R\\ G\\B
+\end{bmatrix}
+$$
+
+$$
+\begin{matrix}
+{Yu}'= \left ( \left ( {Y}'+128 \right )\gg 8 \right ) + 16\\ 
+Uu = \left ( \left ( U + 128 \right )\gg 8 \right ) + 128\\ 
+Vu = \left ( \left ( V + 128 \right )\gg 8 \right ) + 128
+\end{matrix}
+$$
+
+
+
+
+## 几种图像格式
 
 
 ![img](/img/in-post/post-DLS/RBM_structure.png)
