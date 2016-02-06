@@ -321,6 +321,4 @@ YUV422I是YUV422采样中的一种格式，又被称为YUY2、YUNV、YUYV、V422
 
 ![img](/img/in-post/yuv.gif)
 
-
-
 ---
