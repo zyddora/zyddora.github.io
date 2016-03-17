@@ -1,27 +1,26 @@
 ---
 layout:     post
-title:      "图像处理初探（一）——图像转换基础及OpenCV应用"
+title:      "图像处理初探（二）——以Android中YUV422I旋转算法为例"
 subtitle:   ""
-date:       2016-02-05 19:00:00
+date:       2016-03-17 20:43:00
 author:     "Orchid"
 header-img: "img/post-bg-img.jpg"
 tags:
-    - OpenCV
     - 图像处理
+    - OpenCV
+    - C/C++
 ---
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
-> 近日做了些与OpenCV、图像处理相关的工程，两个周的时间收获了挺多，故将涉及到的内容进行整理，方便以后查阅，共同学习。
-本文主要介绍OpenCV使用、图像格式相关的内容。
+> 在上一篇博文里介绍了[图像处理初探（一）——图像转换基础及OpenCV应用](http://zyddora.github.io/2016/02/05/image-process-1/)，本篇在此基础上重点谈图像旋转算法的原理与实现。本文以Android中常见的YUV422I（YUY2）格式为例。
 
 ### Catalog
 
-1. [OpenCV2.4.10 + Win10 VS2015的安装配置](#opencv2410--win10-vs2015)
-2. [OpenCV基本用法](#opencv)
-3. [RGB/YUV色彩空间](#rgbyuv)
-4. [常见图像格式](#section-6)
+1. [通用YUV422I旋转90/270算法](#opencv2410--win10-vs2015)
+2. [通用YUV422I旋转0/180算法](#opencv)
+3. [完善算法以支持不规则尺寸图像的旋转](#rgbyuv)
 
-## OpenCV2.4.10 + Win10 VS2015的安装配置
+## 通用YUV422I旋转90/270算法
 
 ### **工具**
 - OpenCV 下载地址：http://opencv.org/downloads.html
@@ -87,7 +86,7 @@ int main()
 ```
 ---
 
-## OpenCV基本用法
+## 通用YUV422I旋转0/180算法
 
 ### **基本操作**
 
@@ -196,7 +195,7 @@ printf("0x%.2x", x1); // x1为某数值
 ```
 ---
 
-## RGB/YUV色彩空间
+## 完善算法以支持不规则尺寸图像的旋转
 
 ### 一般的图像传输流程（以YUV传输为例）
 
