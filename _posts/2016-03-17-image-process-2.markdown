@@ -26,8 +26,7 @@ tags:
 
 **实现图像旋转算法的关键在于理解清楚：旋转前后图像格式排列规则之间的联系，这很重要。**若您对图像格式非常熟练则容易理解，若为初学者，强烈建议画出前后的图像排列格式。
 
-### **环境变量配置**
-安装OpenCV并解压缩；
+### **YUV422I旋转90°示意图**
 
 配置环境变量：
 
@@ -37,30 +36,12 @@ tags:
 	* 补全PATH变量：e.g. `E:\opencv\build\x86\vc12\bin`
 	* 注：不管操作系统是32位或64位，建议上述目录均选择32位，因为一般都是32位的编译方式，若选择x64路径则可能会出错。
 
-### **在VS中新建项目**
-选择Visual C++中Win32 Console Application（Win32 控制台应用程序）进行创建；
-
-进入Win32应用程序向导：
-
-* 应用程序类型：选择控制台应用程序
-* 附加选项：空项目、预编译头
-
-### **工程目录的配置（Debug）**
+### **YUV422I旋转270°示意图**
 在窗口右侧上栏找到`Property Manager（属性管理器）`，双击`Debug | Win32`：
 
 * 按顺序找到 Common Properties - VC++ Directories - Include Directories，添加`E:\opencv\build\include`，`E:\opencv\build\include\opencv`，`E:\opencv\build\include\opencv2`。
 * 按顺序找到 Common Properties - VC++ Directories - Library Directories，添加`E:\opencv\build\x86\vc12\lib`。
 * 按顺序找到 Common Properties - Linker - Input - Addtional Dependencies，添加`E:\opencv\build\x86\vc12\lib`中的所有后缀带`d`的文件名。示例：
-
-```
-opencv_calib3d2410d.lib
-opencv_contrib2410d.lib
-opencv_core2410d.lib
-......
-```
-
-### **工程目录的配置（Release）**
- - 类似地，双击`Release | Win32`，按照顺序找到 Common Properties - Linker - Input - Addtional Dependencies，添加`E:\opencv\build\x86\vc12\lib`中的所有后缀 **不带`d`** 的文件名。
 
 ### **测试代码**
 
