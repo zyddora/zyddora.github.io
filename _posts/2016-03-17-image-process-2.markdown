@@ -39,11 +39,14 @@ tags:
 - 旋转前图片格式为`(width * 2) * height`，旋转后为`(heigh * 2) * width`；
 
 ### **YUV422I旋转270°示意图**
-在窗口右侧上栏找到`Property Manager（属性管理器）`，双击`Debug | Win32`：
 
-* 按顺序找到 Common Properties - VC++ Directories - Include Directories，添加`E:\opencv\build\include`，`E:\opencv\build\include\opencv`，`E:\opencv\build\include\opencv2`。
-* 按顺序找到 Common Properties - VC++ Directories - Library Directories，添加`E:\opencv\build\x86\vc12\lib`。
-* 按顺序找到 Common Properties - Linker - Input - Addtional Dependencies，添加`E:\opencv\build\x86\vc12\lib`中的所有后缀带`d`的文件名。示例：
+![img](/img/in-post/rot270.jpg)
+
+- 旋转前的奇数行（以1为初始）中的UV信息都无用；
+- 旋转后的偶数行（以1位初始）中的UV信息都是原图中没有的，需要计算得到；
+- 所有的Y信息都进行了转置且都有用（亮度信息必然有用）；
+- `4*2`个YUV信息为旋转算法处理的最小单位；
+- 旋转前图片格式为`(width * 2) * height`，旋转后为`(heigh * 2) * width`；
 
 ### **测试代码**
 
