@@ -103,6 +103,11 @@ vector result.（操作四倍长字，生成双字） The result elements are us
     + 对于无符号饱和运算，如果整个结果将是负值，那么返回的结果是 0；如果结果大于 2^n – 1，则返回的结果将为 2^n – 1；
   * NEON中的饱和算法：通过在V和指令助记符之间使用Q前缀可以指定饱和指令，原理与上述内容相同。
 
+下面给出几幅图解释上述指令的操作原理，图片来自[Search Results Cortex-A Series Programmer's Guide](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.den0013d/index.html)
+
+![img](/img/in-post/neon_long.jpg)
+![img](/img/in-post/neon_wide.jpg)
+![img](/img/in-post/neon_narrow.jpg)
 
 ---
 
