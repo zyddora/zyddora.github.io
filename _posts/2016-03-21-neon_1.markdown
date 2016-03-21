@@ -1,66 +1,50 @@
 ---
 layout:     post
-title:      "图像旋转优化（二）——以Android中YUV422I旋转算法为例"
+title:      "ARM NEON编程概述"
 subtitle:   ""
-date:       2016-03-16 18:43:00
+date:       2016-03-20 13:46:00
 author:     "Orchid"
 header-img: "img/post-bg-img.jpg"
 tags:
-    - 图像处理
-    - C/C++
+    - ARM
+    - NEON
 ---
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
-> 在上一篇博文里介绍了[图像处理初探（一）——图像转换基础及OpenCV应用](http://zyddora.github.io/2016/02/05/image-process-1/)，本篇在此基础上重点谈图像旋转算法的原理与实现。本文以Android中常见的YUV422I（YUY2）格式为例。
+> 本文旨在介绍ARMv7开始增加的一项advanced SIMD extension——NEON技术。有助于帮助读者理解NEON概况，提供的实例分析有助于迅速上手NEON编程。阅读此文要求读者有基本的**C/C++经验**及**汇编代码**经验，若没有也没关系，多理解查阅资料即可。Good luck~!
 
 ### Catalog
 
-1. [通用YUV422I旋转90/270算法](#yuv422i90270)
-2. [通用YUV422I旋转0/180算法](#yuv422i0180)
-3. [完善算法以支持不规则尺寸图像的旋转](#section-2)
-4. [更加省时的图像旋转](#section-3)
+1. [SIMD及NEON概览](#simdneon)
+2. [NEON架构（寄存器/数据类型/指令集）](#neon)
+3. [NEON编程基础](#section-2)
+4. [NEON使用技巧](#section-3)
+5. [参考文献](#section-4)
 
-## 通用YUV422I旋转90/270算法
+## SIMD及NEON概览
 
-### **解决思路**
+### **SIMD**
 
-**实现图像旋转算法的关键在于理解清楚：旋转前后图像格式排列规则之间的联系，这很重要。**初步考虑是，旋转90°或270°涉及相邻行列的像素点（最少2*2个像素点），将Y元素转置而UV元素进行适当地转换，UV的转换是重点。强烈建议画出前后的图像排列格式，再找转换关系。
+**Single Instruction Multiple Data (SIMD)**顾名思义就是“一条指令处理多个数据（一般是以2为底的指数数量）”的**并行处理**技术，相比于“一条指令处理几个数据”，运算速度将会大大提高。它是Michael J. Flynn在1966年定义的四种计算机架构之一（根据指令数与数据流的关系定义，其余还有SISD、MISD、MIMD）。
 
-### **YUV422I旋转90°示意**
+许多程序需要处理大量的数据集，而且很多都是由少于32bits的位数来存储的。比如在书品、图形、图像处理中的8-bit像素数据；音频编码中的16-bit采样数据等。在诸如上述的情形中，很可能充斥着大量简单而重复的运算，且少有控制代码的出现。因此，SIMD就擅长为这类程序提供更高的性能，比如下面几类：
 
-![img](/img/in-post/rot90.jpg)
+- Block-based data processing.
+- Audio, video, and image processing codes.
+- 2D graphics based on rectangular blocks of pixels.
+- 3D graphics.
+- Color-space conversion.
+- Physics simulations.
 
-观察旋转前后可得以下几点信息：
+在32-bit内核的处理器上，如Cortex-A系列，如果不采用SIMD则会将大量时间花费在处理8-bit或16-bit的数据上，但是处理器本身的ALU、寄存器、数据深度又是主要为了32-bit的运算而设计的。因此NEON应运而生。
 
-- 旋转前的奇数行（以1为初始）中的UV信息都无用；
-- 旋转后的偶数行（以1位初始）中的UV信息都是原图中没有的，需要推算；
-  * 比如，图中的U10、V10需从Y10、U9、V9转换得到，通常思路为：(Y10, U9, V9) -> (R9, G9, B9) -> (U10, V10)
-- 所有的Y信息都进行了转置且都有用（亮度信息必然有用）；
-- `4*2`个YUV信息为旋转算法处理的最小单位；
-- 旋转前图片格式为`(width * 2) * height`，旋转后为`(heigh * 2) * width`；
+### **NEON**
 
-旋转90°的C程序框架：
+NEON就是一种基于SIMD思想的ARM技术，相比于ARMv6或之前的架构，NEON结合了64-bit和128-bit的SIMD指令集，提供128-bit宽的向量运算(vector operations)。NEON技术从ARMv7开始被采用，目前可以在ARM Cortex-A和Cortex-R系列处理器中采用。
 
-```cpp
-const unsigned char *src_y = src; /* dst_1_1指向旋转前1-1处的指针 */
-unsigned char *dst_y = dst_1_1; /* dst_1_1指向旋转后1-1处的指针 */
+NEON在Cortex-A7、Cortex-A12、Cortex-A15处理器中被设置为默认选项，但是在其余的ARMv7 Cortex-A系列中是可选项。NEON与VFP共享了同样的寄存器，但它具有自己独立的执行流水线。
 
-for (int i = 0; i < height / 2; ++i) { /* 假设一次外循环处理2行YUYV信息 */
-  src = src_y;
-  dst = dst_y;
-  for (int j = 0; j < doublewidth / 4) { /* 假设一次处理每行相邻4个YUYV信息 */
-    ... // 移动Y信息
-    ... // 计算新的UV信息
-
-    src += 4; /* 更新内循环的指针 */
-    dst += doubleheight * 2;
-  }
-  src_y += doublewidth * 2; /* 更新外循环的指针 */
-  dst_y -= 4;
-}
-```
-
-### **YUV422I旋转270°示意**
+### **NEON架构（寄存器/数据类型/指令集）**
 
 ![img](/img/in-post/rot270.jpg)
 
