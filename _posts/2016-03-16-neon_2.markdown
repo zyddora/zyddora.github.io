@@ -136,7 +136,8 @@ void add_float_neon2(int* dst, int* src1, int* src2, int count)
   - 一定要多测试时间！！原因是你所想跟实际有出入，且不同的编译器优化的效果可能也有些不同；
   - 一定要有一定的计算机体系结构基础，对存储结构、流水线有一定的体会！！
 
-**【注意】**在此笔者温馨提示各位看官~~不仅是NEON，所有的性能优化是个经验活儿，需要自己动手才能领悟更多的诀窍，总结一下NEON优化就是：
+**【注意】**在此笔者温馨提示各位看官(⊙o⊙)不仅是NEON，所有的性能优化是个经验活儿，需要自己动手才能领悟更多的诀窍，总结一下NEON优化就是：
+
 - 第一优化算法实现流程；
 - 第二优化程序存取；
 - 第三优化程序执行；
@@ -147,6 +148,7 @@ void add_float_neon2(int* dst, int* src1, int* src2, int count)
 当读者熟练后就可以直接上手内联汇编了。时间有限，本文中不具体介绍inline assembly的使用方法，我后续可能会将这部分单独写成一篇博客。感兴趣者请参见[ARM GCC Inline Assembler Cookbook](http://www.ethernut.de/en/documents/arm-inline-asm.html)
 
 一些使用心得：
+
 - **inline assembly下面的三个冒号一定要注意！**output/input registers的写法一定要写对，clobber list也一定要写完全，否则会造成令你头疼的问题 (T-T) ... 这个问题在给出的cookbook中也有介绍，但是并不全面，有些问题只有自己碰到了再去解决。 笔者就曾经被虐了很久，从生成的汇编发现编译器将寄存器乱用，导致指针操作完全混乱，毫无头绪...
 - **传入内联汇编程序段的C参数是有限的！**笔者亲测output/input registers基本在9以内才可保证，否则会报出`can't find a register in class 'GENERAL_REGS' while reloading 'asm'`错误。
 
