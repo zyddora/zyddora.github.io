@@ -141,12 +141,74 @@ VADD.I16 D0, D1, D2   @ 16位加法
 VMLAL.S16 Q2, D8, D9  @ 有符号16位乘加
 ```
 
+**NEON支持的指令总结**
+
+1. 运算：和、差、积、商
+2. 共享的 NEON 和 VFP 指令：涉及加载、多寄存器间的传送、存储
+
+具体指令请参见[ARM® Compiler armasm User Guide - Chapter 12 NEON and VFP Instructions](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473j/dom1361289959991.html)
+
+注：VFP指令与NEON可能相像，助记符也可能与NEON指令相同，但是操作数等等是不同的，涉及多个基本运算。
+
 ---
 
-## 通用YUV422I旋转0/180算法
+## NEON编程基础
 
-### **解决思路**
+使用NEON主要有四种方法：
 
-### **YUV422I旋转180°示意**
+1. NEON优化库(Optimized libraries)
+2. 向量化编译器(Vectorizing compilers)
+3. NEON intrinsics
+4. NEON assembly
+
+根据优化程度需求不同，第4种最为底层，若熟练掌握效果最佳，一般也会配合第3种一起使用。本文将会重点介绍第3、4种方法。先简要介绍前两种。
+
+- Libraries：直接在程序中调用优化库
+  * OpenMax DL：支持加速视频编解码、信号处理、色彩空间转换等；
+  * Ne10：一个ARM的开源项目，提供数学运算、图像处理、FFT函数等。
+- Vectorizing compilers：GCC编译器的向量优化选项
+  * 在GCC选项中加入向量化表示能有助于C代码生成NEON代码，如`-ftree-vectorize`。
+
+### **NEON intrinsics**
+
+提供了一个连接NEON操作的C函数接口，编译器会自动生成相关的NEON指令，支持ARMv7-A或ARMv8-A平台。
+
+所有的intrinsics函数都在[GNU官方说明文档](https://gcc.gnu.org/onlinedocs/gcc-4.7.4/gcc/ARM-NEON-Intrinsics.html#ARM-NEON-Intrinsics)。
+
+一个简单的例子：
+
+```cpp
+//add for int array. assumed that count is multiple of 4
+ 
+#include<arm_neon.h>
+ 
+// C version
+void add_int_c(int* dst, int* src1, int* src2, int count)
+{
+  int i;
+  for (i = 0; i < count; i++)
+    dst[i] = src1[i] + src2[i];
+  }
+}
+ 
+// NEON version
+void add_float_neon1(int* dst, int* src1, int* src2, int count)
+{
+  int i;
+  for (i = 0; i < count; i += 4)
+  {
+    int32x4_t in1, in2, out;
+    in1 = vld1q_s32(src1);
+    src1 += 4;
+    in2 = vld1q_s32(src2);
+    src2 += 4;
+    out = vaddq_s32(in1, in2);
+    vst1q_s32(dst, out);
+    dst += 4;
+  }
+}
+```
+
+代码中的`vld1q_s32`会被编译器转换成`vld1.32 {d0, d1}, [r0]`指令，同理`vaddq_s32`和`vst1q_s32`被转换成`vadd.i32 q0, q0, q0`，`vst1.32 {d0, d1}, [r0]`。若不清楚指令意义，请参见[ARM® Compiler armasm User Guide - Chapter 12 NEON and VFP Instructions](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473j/dom1361289959991.html)。
 
 ---
