@@ -12,12 +12,12 @@ tags:
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
 > 本文旨在介绍ARMv7开始增加的一项advanced SIMD extension——NEON技术。有助于帮助读者理解NEON概况，提供的实例分析有助于迅速上手NEON编程。阅读此文要求读者有基本的**C/C++经验**及**汇编代码**经验，若没有也没关系，多理解查阅资料即可。
-关于第一讲请见[ARM NEON优化（一）——NEON简介及基本架构]()Good luck~!
+关于第一讲请见[ARM NEON优化（一）——NEON简介及基本架构](http://zyddora.github.io/2016/02/28/neon_1/)Good luck~!
 
 ### Catalog
 
 1. [NEON编程基础](#section-2)
-2. [NEON使用技巧](#section-3)
+2. [NEON优化心得](#section-3)
 
 
 ## NEON编程基础
@@ -126,7 +126,6 @@ void add_float_neon2(int* dst, int* src1, int* src2, int count)
 
 3. **写成汇编进一步优化**。
 将intrinsics生成的汇编代码进行优化调整。一般来说，有以下几点值得注意：
-
   - 只要intrinsics运算指令足够精简，运算类的汇编指令就不用大修；
   - **大部分的问题会出在存取、移动指令的滥用、混乱使用上**。
 
