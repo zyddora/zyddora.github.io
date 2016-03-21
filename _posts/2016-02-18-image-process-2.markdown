@@ -2,7 +2,7 @@
 layout:     post
 title:      "图像旋转优化（二）——以Android中YUV422I旋转算法为例"
 subtitle:   ""
-date:       2016-03-16 18:43:00
+date:       2016-02-18 18:43:00
 author:     "Orchid"
 header-img: "img/post-bg-img.jpg"
 tags:

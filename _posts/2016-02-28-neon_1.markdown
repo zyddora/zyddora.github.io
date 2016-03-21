@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:      "ARM NEON编程概述"
+title:      "ARM NEON优化（一）——NEON简介及基本架构"
 subtitle:   ""
-date:       2016-03-20 13:46:00
+date:       2016-02-28 13:46:00
 author:     "Orchid"
 header-img: "img/post-bg-img.jpg"
 tags:
@@ -17,9 +17,6 @@ tags:
 
 1. [SIMD及NEON概览](#simdneon)
 2. [NEON架构（寄存器/数据类型/指令集）](#neon)
-3. [NEON编程基础](#section-2)
-4. [NEON使用技巧](#section-3)
-5. [参考文献](#section-4)
 
 ## SIMD及NEON概览
 
@@ -149,115 +146,5 @@ VMLAL.S16 Q2, D8, D9  @ 有符号16位乘加
 具体指令请参见[ARM® Compiler armasm User Guide - Chapter 12 NEON and VFP Instructions](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473j/dom1361289959991.html)
 
 注：VFP指令与NEON可能相像，助记符也可能与NEON指令相同，但是操作数等等是不同的，涉及多个基本运算。
-
----
-
-## NEON编程基础
-
-使用NEON主要有四种方法：
-
-1. NEON优化库(Optimized libraries)
-2. 向量化编译器(Vectorizing compilers)
-3. NEON intrinsics
-4. NEON assembly
-
-根据优化程度需求不同，第4种最为底层，若熟练掌握效果最佳，一般也会配合第3种一起使用。本文将会重点介绍第3、4种方法。先简要介绍前两种。
-
-- Libraries：直接在程序中调用优化库
-  * OpenMax DL：支持加速视频编解码、信号处理、色彩空间转换等；
-  * Ne10：一个ARM的开源项目，提供数学运算、图像处理、FFT函数等。
-- Vectorizing compilers：GCC编译器的向量优化选项
-  * 在GCC选项中加入向量化表示能有助于C代码生成NEON代码，如`-ftree-vectorize`。
-
-### **NEON intrinsics**
-
-提供了一个连接NEON操作的C函数接口，编译器会自动生成相关的NEON指令，支持ARMv7-A或ARMv8-A平台。
-
-所有的intrinsics函数都在[GNU官方说明文档](https://gcc.gnu.org/onlinedocs/gcc-4.7.4/gcc/ARM-NEON-Intrinsics.html#ARM-NEON-Intrinsics)。
-
-一个简单的例子：
-
-```cpp
-//add for int array. assumed that count is multiple of 4
- 
-#include<arm_neon.h>
- 
-// C version
-void add_int_c(int* dst, int* src1, int* src2, int count)
-{
-  int i;
-  for (i = 0; i < count; i++)
-    dst[i] = src1[i] + src2[i];
-  }
-}
- 
-// NEON version
-void add_float_neon1(int* dst, int* src1, int* src2, int count)
-{
-  int i;
-  for (i = 0; i < count; i += 4)
-  {
-    int32x4_t in1, in2, out;
-    in1 = vld1q_s32(src1);
-    src1 += 4;
-    in2 = vld1q_s32(src2);
-    src2 += 4;
-    out = vaddq_s32(in1, in2);
-    vst1q_s32(dst, out);
-    dst += 4;
-  }
-}
-```
-
-代码中的`vld1q_s32`会被编译器转换成`vld1.32 {d0, d1}, [r0]`指令，同理`vaddq_s32`和`vst1q_s32`被转换成`vadd.i32 q0, q0, q0`，`vst1.32 {d0, d1}, [r0]`。若不清楚指令意义，请参见[ARM® Compiler armasm User Guide - Chapter 12 NEON and VFP Instructions](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473j/dom1361289959991.html)。
-
-### **NEON assembly**
-
-NEON可以有两种写法：
-
-1. Assembly文件
-  - 纯汇编文件，后缀为".S"或".s"。注意对寄存器数据的保存。具体对通用寄存器的详解不是本文的重点，有兴趣的读者请自行补充该部分知识。
-2. inline assembly内联汇编
-  - 优点：在C代码中嵌入汇编，调用简单，无需手动存储寄存器；
-  - 缺点：有较为复杂的格式需要事先学习，不好移植到其他语言环境。
-
-比如上述intrinsics代码产生的汇编代码为：
-
-```
-// ARMv7-A/AArch32
-
-void add_float_neon2(int* dst, int* src1, int* src2, int count)
-{
-  asm volatile (
-    "1:                                         \n"
-    "vld1.32         {q0}, [%[src1]]!           \n"
-    "vld1.32         {q1}, [%[src2]]!           \n"
-    "vadd.f32        q0, q0, q1                  \n"
-    "subs            %[count], %[count], #4     \n"
-    "vst1.32         {q0}, [%[dst]]!            \n"
-    "bgt             1b                         \n"
-    : [dst] "+r" (dst)
-    : [src1] "r" (src1), [src2] "r" (src2), [count] "r" (count)
-    : "memory", "q0", "q1"
-  );
-}
-```
----
-
-## NEON使用技巧
-
-笔者在前段时间连续使用NEON做ARM平台的优化，由于中文资料少得可怜，且英文资料零散琐碎，期间也遇到不少坑，先摘出部分经验至此，希望能够帮助到大家。︿(￣︶￣)︿
-
-### 建议的NEON调优步骤
-
-1. **理清所需的寄存器、指令**
-  建议根据要实现的任务，画出数据变换流程，和每步所需的具体指令，尽可能找到最优的实现流程。这一步非常关键，如果思路出错或是不够优化，则会影响使用NEON的效果，并且对程序修改带来麻烦，一定要找到最优的实现算法哦~
-
-2. **先实现intrinsics（可选）**
-  初学者先实现intrinsics是有好处的，字面理解性更强，且有助于理解NEON指令。建议随时打印关键步骤的数据，以检查程序的正误。
-
-3. **写成汇编进一步优化**
-
-
 
 ---
