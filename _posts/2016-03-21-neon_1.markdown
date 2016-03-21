@@ -109,100 +109,44 @@ vector result.（操作四倍长字，生成双字） The result elements are us
 ![img](/img/in-post/neon_wide.jpg)
 ![img](/img/in-post/neon_narrow.jpg)
 
+### **NEON指令集（重点）**
+
+**ARMv7/AArch32指令格式**
+
+所有的支持NEON指令都有一个助记符`V`，下面以32位指令为例，说明指令的一般格式：
+
+```
+V{<mod>}<op>{<shape>}{<cond>}{.<dt>}{<dest>}, src1, src2
+```
+
+- **<mod>**
+  * Q: The instruction uses saturating arithmetic, so that the result is saturated within the range of the specified data type, such as `VQABS`, `VQSHL` etc.
+  * H: The instruction will halve the result. It does this by shifting right by one place (effectively a divide by two with truncation), such as `VHADD`, `VHSUB`.
+  * D: The instruction doubles the result, such as `VQDMULL`, `VQDMLAL`, `VQDMLSL` and `VQ{R}DMULH`.
+  * R: The instruction will perform rounding on the result, equivalent to adding 0.5 to the result before truncating, such as `VRHADD`, `VRSHR`.
+- **<op>** - the operation (for example, `ADD`, `SUB`, `MUL`).
+- **<shape>** - Shape，即前文中的Long (L), Wide (W), Narrow (N).
+- **<cond>** - Condition, used with IT instruction.
+- **<.dt>** - Data type, such as s8, u8, f32 etc.
+- **<dest>** - Destination.
+- **<src1>** - Source operand 1.
+- **<src2>** - Source operand 2.
+
+注: {} 表示可选的参数。
+
+比如：
+
+```
+VADD.I16 D0, D1, D2   @ 16位加法
+VMLAL.S16 Q2, D8, D9  @ 有符号16位乘加
+```
+
 ---
 
 ## 通用YUV422I旋转0/180算法
 
 ### **解决思路**
 
-旋转0°、180°较90°、270°更简单，仅涉及行上的像素点的转换（最少2*1个像素点）。
-
 ### **YUV422I旋转180°示意**
-
-![img](/img/in-post/rot180.jpg)
-
-观察可发现：
-
-- 旋转前的所有YUV信息都有用；
-- 旋转后的每行Y信息逆置，UV信息则需要推算，推算思路与上述类似；
-- 旋转前后的图像规格不变，仍为`(width * 2) * height`；
-
-旋转0°的本质：
-
-- 图像数据的拷贝；
-
-旋转180°的C程序框架：
-
-```cpp
-const unsigned char *src_y = src; /* dst_1_1指向旋转前1-1处的指针 */
-unsigned char *dst_y = dst_1_1; /* dst_1_1指向旋转后1-1处的指针 */
-
-for (int i = 0; i < height; ++i) {
-  src = src_y;
-  dst = dst_y;
-  for (int j = 0; j < doublewidth / 4) { /* 假设一次处理每行相邻4个YUYV信息 */
-    // 移动Y信息
-    // 计算新的UV信息
-
-    src += 4; /* 更新内循环的指针 */
-    dst -= 4;
-  }
-  src_y += doublewidth; /* 更新外循环的指针 */
-  dst_y -= doublewidth;
-}
-```
-
----
-
-## 完善算法以支持不规则尺寸图像的旋转
-
-上述算法仅是一个基础版本，对于不规则的行列数的图像是不支持的，目前基本算法的局限：
-
-1. 若上述算法一次处理每行多个YUYV信息块（即大于4，如8、16、32等），则存在每行的尾数；
-2. 旋转90°/270°算法仅支持高度height为2的倍数；
-
-处理问题1的思路：
-
-可以确定的是YUV422I格式的图像的宽度一定是4的倍数（以YUYV为一组信息），因此不论一次处理每行YUYV块的个数是多少（4、8、16、32等），剩余的YUYV信息一定也是4的整数倍，故对尾数按照以4为行上一组的单位来处理。
-
-处理问题2的思路：
-
-YUV422I格式图像旋转90°/270°，若原图高度为奇数，则对旋转后的宽度造成影响。故此情况，需要在转换过程中进行补齐，可以直接存入255代替缺失的高度。
-
----
-
-## 更加省时的图像旋转
-
-> 一般地，图像呈现局部相关性，上下左右相邻的像素值相关度很高。
-
-可以发现，旋转算法存在着不少用于计算新UV信息的计算量。但是对于性能优化来说，**有时节省资源与编码效果是互补的关系，以一方的牺牲来换取另一方的提升**，其实这个原则在很多地方都适用，重点在于程序要解决的主要矛盾是什么。那么，**如果对图片质量的需求并不高，就将邻近的UV信息直接复制，以节省掉计算UV的时间，将会带来很大的增益**。
-
-### 推导证明“直接复制UV”的可行性
-
-$$
-256\cdot \begin{bmatrix} R\\ G\\ B\end{bmatrix} = 
-\begin{bmatrix}298 & 0 & 409\\ 298 & -100 & -208\\ 298 & 516 & 0\end{bmatrix}
-\begin{bmatrix}Y-16\\ U-128\\ V-128\end{bmatrix}\\ \\ \\
-
-256^{2}\begin{bmatrix}Y\\ U\\ V\end{bmatrix} = 
-256\begin{bmatrix}66 & 129 & 25\\ -38 & -74 & 112\\ 112 & -94 & -18\end{bmatrix}
-\begin{bmatrix}298 & 0 & 409\\ 298 & -100 & -208\\ 298 & 516 & 0\end{bmatrix}
-\begin{bmatrix}R\\ G\\ B\end{bmatrix} + 256^{2}
-\begin{bmatrix}16\\ 128\\ 128\end{bmatrix}\\ \\ \\
-
-256\begin{bmatrix}Y\\ U\\ V\end{bmatrix} = 
-\begin{bmatrix}256.09 & 0 & 0.63\\ 0 & 254.66 & -0.59\\ 0 & 0.44 & 255.31\end{bmatrix}
-\begin{bmatrix}Y-16\\ U-128\\ V-128\end{bmatrix} + 
-256\begin{bmatrix}16\\ 128\\ 128\end{bmatrix}
-$$
-
-从推导的结果很容易发现，最终式子的系数矩阵主对角线绝对占优，因此YUV->RGB->YUV整个过程更像是YUV的直接“复制”。
-
-下图是用“直接复制UV”的方法做的图像旋转的实验。
-
-![img](/img/in-post/cont1.JPG)
-![img](/img/in-post/cont2.JPG)
-
-可以看到旋转90°后的图像除了高频部分有些杂乱模糊外（注意图中的几个圆圈字母边缘有些模糊，由于是笔者截图后的结果，所以计算机可能做了些处理，减小了前后的差异性），其他表现都不错。这证明直接复制UV的方法某种意义上也是可行的。
 
 ---
