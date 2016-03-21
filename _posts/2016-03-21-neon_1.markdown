@@ -124,13 +124,13 @@ V{<mod>}<op>{<shape>}{<cond>}{.<dt>}{<dest>}, src1, src2
   * H: The instruction will halve the result. It does this by shifting right by one place (effectively a divide by two with truncation), such as `VHADD`, `VHSUB`.
   * D: The instruction doubles the result, such as `VQDMULL`, `VQDMLAL`, `VQDMLSL` and `VQ{R}DMULH`.
   * R: The instruction will perform rounding on the result, equivalent to adding 0.5 to the result before truncating, such as `VRHADD`, `VRSHR`.
-- **<op>** - the operation (for example, `ADD`, `SUB`, `MUL`).
-- **<shape>** - Shape，即前文中的Long (L), Wide (W), Narrow (N).
-- **<cond>** - Condition, used with IT instruction.
-- **<.dt>** - Data type, such as s8, u8, f32 etc.
-- **<dest>** - Destination.
-- **<src1>** - Source operand 1.
-- **<src2>** - Source operand 2.
+- **\<op\>** - the operation (for example, `ADD`, `SUB`, `MUL`).
+- **\<shape\>** - Shape，即前文中的Long (L), Wide (W), Narrow (N).
+- **\<cond\>** - Condition, used with IT instruction.
+- **\<.dt\>** - Data type, such as s8, u8, f32 etc.
+- **\<dest\>** - Destination.
+- **\<src1\>** - Source operand 1.
+- **\<src2\>** - Source operand 2.
 
 注: {} 表示可选的参数。
 
