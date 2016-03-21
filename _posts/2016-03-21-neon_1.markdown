@@ -119,7 +119,7 @@ vector result.（操作四倍长字，生成双字） The result elements are us
 V{<mod>}<op>{<shape>}{<cond>}{.<dt>}{<dest>}, src1, src2
 ```
 
-- **<mod>**
+- **\<mod\>**
   * Q: The instruction uses saturating arithmetic, so that the result is saturated within the range of the specified data type, such as `VQABS`, `VQSHL` etc.
   * H: The instruction will halve the result. It does this by shifting right by one place (effectively a divide by two with truncation), such as `VHADD`, `VHSUB`.
   * D: The instruction doubles the result, such as `VQDMULL`, `VQDMLAL`, `VQDMLSL` and `VQ{R}DMULH`.
