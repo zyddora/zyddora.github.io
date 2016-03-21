@@ -19,175 +19,108 @@ tags:
 1. [通用YUV422I旋转90/270算法](#yuv422i90270)
 2. [通用YUV422I旋转0/180算法](#yuv422i0180)
 3. [完善算法以支持不规则尺寸图像的旋转](#section-5)
+4. [更加省时的图像旋转](#section-6)
 
 ## 通用YUV422I旋转90/270算法
 
 ### **解决思路**
 
-**实现图像旋转算法的关键在于理解清楚：旋转前后图像格式排列规则之间的联系，这很重要。**强烈建议画出前后的图像排列格式，再找转换关系。
+**实现图像旋转算法的关键在于理解清楚：旋转前后图像格式排列规则之间的联系，这很重要。**初步考虑是，旋转90°或270°涉及相邻行列的像素点（最少2*2个像素点），将Y元素转置而UV元素进行适当地转换，UV的转换是重点。强烈建议画出前后的图像排列格式，再找转换关系。
 
-### **YUV422I旋转90°示意图**
+### **YUV422I旋转90°示意**
 
 ![img](/img/in-post/rot90.jpg)
 
 观察旋转前后可得以下几点信息：
 
 - 旋转前的奇数行（以1为初始）中的UV信息都无用；
-- 旋转后的偶数行（以1位初始）中的UV信息都是原图中没有的，需要计算得到；
+- 旋转后的偶数行（以1位初始）中的UV信息都是原图中没有的，需要推算；
+  * 比如，图中的U10、V10需从Y10、U9、V9转换得到，通常思路为：(Y10, U9, V9) -> (R9, G9, B9) -> (U10, V10)
 - 所有的Y信息都进行了转置且都有用（亮度信息必然有用）；
 - `4*2`个YUV信息为旋转算法处理的最小单位；
 - 旋转前图片格式为`(width * 2) * height`，旋转后为`(heigh * 2) * width`；
 
-### **YUV422I旋转270°示意图**
+旋转90°的C程序框架：
+
+```
+const unsigned char *src_y = src; /* dst_1_1指向旋转前1-1处的指针 */
+unsigned char *dst_y = dst_1_1; /* dst_1_1指向旋转后1-1处的指针 */
+
+for (int i = 0; i < height / 2; ++i) { /* 假设一次外循环处理2行YUYV信息 */
+  src = src_y;
+  dst = dst_y;
+  for (int j = 0; j < doublewidth / 4) { /* 假设一次处理每行相邻4个YUYV信息 */
+    ... // 移动Y信息
+    ... // 计算新的UV信息
+
+    src += 4; /* 更新内循环的指针 */
+    dst += doubleheight * 2;
+  }
+  src_y += doublewidth * 2; /* 更新外循环的指针 */
+  dst_y -= 4;
+}
+```
+
+### **YUV422I旋转270°示意**
 
 ![img](/img/in-post/rot270.jpg)
 
-- 旋转前的奇数行（以1为初始）中的UV信息都无用；
-- 旋转后的偶数行（以1位初始）中的UV信息都是原图中没有的，需要计算得到；
-- 所有的Y信息都进行了转置且都有用（亮度信息必然有用）；
-- `4*2`个YUV信息为旋转算法处理的最小单位；
-- 旋转前图片格式为`(width * 2) * height`，旋转后为`(heigh * 2) * width`；
+与旋转90°情况的不同在于：
 
-### **测试代码**
+- 旋转前的偶数行（以1为初始）中的UV信息都无用；
+- 旋转后的奇数行（以1位初始）中的UV信息都是原图中没有的，需要推算；
+  * 比如，图中的U24、V24需从Y24、U23、V23转换得到，通常思路为：(Y24, U23, V23) -> (R24, G24, B24) -> (U24, V24)
 
-```cpp
-#include <cv.h>
-#include <highgui.h>
+旋转270°的C程序框架与90°类似，此处不赘述。
 
-using namespace cv;
-using namespace std;
-
-int main()
-{
-  IplImage * test;
-  test = cvLoadImage("D:\\Sample_8.bmp");//路径，注意加双斜杠转义
-  cvNamedWindow("test_demo", 1);
-  cvShowImage("test_demo", test);
-  cvWaitKey(0);
-  cvDestroyWindow("test_demo");
-  cvReleaseImage(&test);
-  system("pause");
-  return 0;
-}
-```
 ---
 
 ## 通用YUV422I旋转0/180算法
 
-### **基本操作**
+### **解决思路**
 
-OpenCV通过结构体`IplImage`存储图片的信息，通过指向`IplImage`的指针对图片进行操作。
+旋转0°、180°较90°、270°更简单，仅涉及行上的像素点的转换（最少2*1个像素点）。
 
-```cpp
-typedef struct _IplImage
-{
-  int  nSize;             /* sizeof(IplImage) */
-  int  ID;                /* version (=0)*/
-  int  nChannels;         /* Most of OpenCV functions support 1,2,3 or 4 channels */
-  int  alphaChannel;      /* Ignored by OpenCV */
-  int  depth;             /* Pixel depth in bits: IPL_DEPTH_8U, IPL_DEPTH_8S, IPL_DEPTH_16S,
-                             IPL_DEPTH_32S, IPL_DEPTH_32F and IPL_DEPTH_64F are supported.  */
-  char colorModel[4];     /* Ignored by OpenCV */
-  char channelSeq[4];     /* ditto */
-  int  dataOrder;         /* 0 - interleaved color channels, 1 - separate color channels.
-                             cvCreateImage can only create interleaved images */
-  int  origin;            /* 0 - top-left origin,
-                             1 - bottom-left origin (Windows bitmaps style).  */
-  int  align;             /* Alignment of image rows (4 or 8).
-                             OpenCV ignores it and uses widthStep instead.    */
-  int  width;             /* Image width in pixels.                           */
-  int  height;            /* Image height in pixels.                          */
-  struct _IplROI *roi;    /* Image ROI. If NULL, the whole image is selected. */
-  struct _IplImage *maskROI;      /* Must be NULL. */
-  void  *imageId;                 /* "           " */
-  struct _IplTileInfo *tileInfo;  /* "           " */
-  int  imageSize;         /* Image data size in bytes
-                             (==image->height*image->widthStep
-                             in case of interleaved data)*/
-  char *imageData;        /* Pointer to aligned image data.         */
-  int  widthStep;         /* Size of aligned image row in bytes.    */
-  int  BorderMode[4];     /* Ignored by OpenCV.                     */
-  int  BorderConst[4];    /* Ditto.                                 */
-  char *imageDataOrigin;  /* Pointer to very origin of image data
-                             (not necessarily aligned) -
-                             needed for correct deallocation */
-}IplImage;
+### **YUV422I旋转180°示意**
+
+![img](/img/in-post/rot180.jpg)
+
+观察可发现：
+
+- 旋转前的所有YUV信息都有用；
+- 旋转后的每行Y信息逆置，UV信息则需要推算，推算思路与上述类似；
+- 旋转前后的图像规格不变，仍为`(width * 2) * height`；
+
+旋转0°的本质：
+
+- 图像数据的拷贝；
+
+旋转180°的C程序框架：
+
 ```
+const unsigned char *src_y = src; /* dst_1_1指向旋转前1-1处的指针 */
+unsigned char *dst_y = dst_1_1; /* dst_1_1指向旋转后1-1处的指针 */
 
-其中，比较重要的成员为：
+for (int i = 0; i < height; ++i) {
+  src = src_y;
+  dst = dst_y;
+  for (int j = 0; j < doublewidth / 4) { /* 假设一次处理每行相邻4个YUYV信息 */
+    // 移动Y信息
+    // 计算新的UV信息
 
-- `int nChannels`：图像通道数，如RGB为3，RGBA为4，YUV为1。
-- `int depth`：图像深度，即各像素的数值类型，如IPL_DEPTH_8U为8bits unsigned char，其余支持类型见上述代码说明。
-- `int width`：图像宽度。
-- `int height`：图像高度。
-- `int imageSize`：图像占用字节数，即`height * widthStep`。
-- `char *imageData`：指向图像数据的`char`型指针。
-- `int widthStep`：图像宽度步长。需要特别注意的值，因为图像每行需要内存对齐，所以`width`和`widthStep`是不同的。比如：`width = 311, widthStep = 312`，我自己测试在x86上widthStep必须是4的倍数。此概念对于操作图像具体像素值是非常重要的。
-
-**读取图片**
-
-```cpp
-function: CVAPI(IplImage*) cvLoadImage( const char* filename, int iscolor CV_DEFAULT(CV_LOAD_IMAGE_COLOR));
-example: IplImage *test_ori = cvLoadImage(argv[1], 1);
-```
-
-**创建图片**
-
-```cpp
-function: CVAPI(IplImage*)  cvCreateImage( CvSize size, int depth, int channels );
-example: IplImage *rec_ori = cvCreateImage(cvSize(cvwidth, cvheight), IPL_DEPTH_8U, 3);
-```
-
-**显示图片**
-
-```cpp
-function: CVAPI(void) cvShowImage( const char* name, const CvArr* image );
-example: cvShowImage("recover", rec_ori);
-```
-
-**转换图片色彩空间**
-
-```cpp
-function: CVAPI(void)  cvCvtColor( const CvArr* src, CvArr* dst, int code );
-example: cvCvtColor(test_ori, cvt_yuv422, CV_BGR2YUV);
-```
-
-注：cvCvtColor函数虽然提供了多种自带转换，但不提供BGR-->YUV422I(YUY2、YUNV、YUYV、V422)的转换，反而提供YUV422I-->BGR的转换。此处，YUV422I是Android常用的图片格式，但如若进行图像处理，则一般需要转换成RGB。
-
-**分通道显示图像**
-
-```cpp
-function: void cvSplit(const CvArr* src,CvArr *dst0,CvArr *dst1, CvArr *dst2, CvArr *dst3);
-example: 
-for (int i = 0; i < test_ori->nChannels; ++i) {
-  imgChannel_[i] = cvCreateImage(cvGetSize(test_ori), test_ori->depth, 1);
+    src += 4; /* 更新内循环的指针 */
+    dst -= 4;
+  }
+  src_y += doublewidth; /* 更新外循环的指针 */
+  dst_y -= doublewidth;
 }
-
-cvSplit(test_ori, imgChannel_[0], imgChannel_[1], imgChannel_[2], 0);
-
-cvShowImage("B_", imgChannel_[0]);
-cvShowImage("G_", imgChannel_[1]);
-cvShowImage("R_", imgChannel_[2]);
 ```
 
-注：通常情况下，通道小于4，则可以填0或NULL以补全。显示每个通道时，也是灰色图像，如果要以蓝、绿、红色展示，有其他方法，但我个人感觉并不需要，因为颜色只是一种直观的判断方法，但是具体还是其中的数值。
-
-### 其他
-
-**图像数值显示**：一般的RGB、YUV或者灰度图像基本都是以8bits unsigned char的形式存储，范围在0~255之间。在做图像转换、恢复时，经常需要检查具体图像数据，因此建议以十六进制显示为佳。显示方式如下：
-
-```cpp
-printf("0x%.2x", x1); // x1为某数值
-```
 ---
 
 ## 完善算法以支持不规则尺寸图像的旋转
 
-### 一般的图像传输流程（以YUV传输为例）
 
-**发送端**： 彩色图像 --> 分色后放大校正得到RGB图像 --> 矩阵变换 --> 得到YUV --> 将三信号分别编码发送
-
-**接收端**： 解码得到YUV --> 转换YUV到RGB ---> 进一步处理
 
 ### RGB与YUV的相互转换
 
@@ -196,44 +129,6 @@ RGB的原理是三者的组合可以构成任何颜色，用三个0~255的数构
 > 人类大脑最先感知的是亮度。
 
 依据这个理论，结合人眼对于不同颜色的灵敏度相异，采用YUV的模型也能够更好反映色彩。三个值有不同的含义：
-
-- **Y**代表亮度，是个正数，在0~255之间，0为黑，255为白；
-- **U（Cr）**有正有负，正数时代表**<font color="#ff0000">红色</font>**，负数时代表**<font color="#00ff00">绿色</font>**；
-- **V（Cb）**有正有负，正数时代表**<font color="#0000ff">蓝色</font>**，负数时代表**<font color="#eeee00">黄色</font>**。
-
-明白了RGB和YUV的含义，接下来列出二者互相转化的公式。可以看出，二者是**线性转换**，1个RGB向量对应1个YUV向量，使得亮度、色度、饱和度信息分离。
-
-$$
-\begin{bmatrix}
-Y\\ 
-U\\ 
-V
-\end{bmatrix}=\begin{bmatrix}
-0.299 & 0.587 & 0.114\\ 
--0.147 & -0.289 & 0.436\\ 
-0.615 & -0.515 & -0.100
-\end{bmatrix}\begin{bmatrix}
-R\\ 
-G\\ 
-B
-\end{bmatrix}
-$$
-
-$$
-\begin{bmatrix}
-R\\ 
-G\\ 
-B
-\end{bmatrix}=\begin{bmatrix}
-1 & 0 & 1.140\\ 
-1 & -0.395 & -0.581\\ 
-1 & 2.032 & 0
-\end{bmatrix}\begin{bmatrix}
-Y\\ 
-U\\ 
-V
-\end{bmatrix}
-$$
 
 注：上述转换标准是SDTV with BT.601（ITU-R Recommendation BT.601）所规范的，是较为被普遍使用的一种，当然还有其他规范。依旧是线性变换，但区别在于具体参数不同。
 
@@ -290,7 +185,7 @@ $$
 - 可观察到右移8位前，都会加128，这是考虑了四舍五入。因为右移8位即除以\\( 2^{8} = 256 \\)，而加上\\( 2^{7} = 128 \\)，故进行了四舍五入。这是一种惯用的ground方法，应该从二进制的视角来看。
 
 
-## 常见图像格式
+## 更加省时的图像旋转
 
 ### YUV
 
