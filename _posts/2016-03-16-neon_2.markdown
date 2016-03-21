@@ -145,6 +145,8 @@ void add_float_neon2(int* dst, int* src1, int* src2, int count)
 
 对NEON优化使用的好坏直接导致优化效果，优化效果好的会节省70%以上的时间。
 
+---
+
 ## 内联汇编使用心得
 
 当读者熟练后就可以直接上手内联汇编了。时间有限，本文中不具体介绍inline assembly的使用方法，我后续可能会将这部分单独写成一篇博客。感兴趣者请参见[ARM GCC Inline Assembler Cookbook](http://www.ethernut.de/en/documents/arm-inline-asm.html)
@@ -170,6 +172,6 @@ asm volatile (
 - **传入内联汇编程序段的C参数是有限的**
   * 笔者亲测对于Cortex-A7平台output/input registers基本在9以内才可保证，否则会报出`can't find a register in class 'GENERAL_REGS' while reloading 'asm'`错误。
 
-
-
 ---
+
+**内容太多，笔者就先写到这儿，容看官慢慢消化，后续可能还会写一篇NEON优化进阶版，讲解一些优化小trick~敬请期待！**
