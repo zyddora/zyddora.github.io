@@ -4,7 +4,7 @@ title:      "GPU程序优化（一）"
 subtitle:   ""
 date:       2016-03-25 13:46:00
 author:     "Orchid"
-header-img: "img/post-bg-img.jpg"
+header-img: "img/post-bg-cuda.jpg"
 tags:
     - GPU
     - 并行程序优化
