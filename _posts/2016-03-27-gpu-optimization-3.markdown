@@ -23,6 +23,7 @@ tags:
   - [SM中的occupancy占用率](#smoccupancy) 
 4. [优化代码计算性能](#smoccupancy)
   - [减小线程发散度](#)
+  - [选择效率更高的数学计算](#)
 
 
 ## 已经达到极限了？
@@ -85,8 +86,6 @@ tags:
 
 那么为什么并行化到元素级别后，DRAM利用率还是这么低呢？
 
----
-
 ### coalesce合并
 
 下面来思考一下可能的解决办法。一般来说，会想到coalesce合并。
@@ -130,8 +129,6 @@ __global__ void transpose_parallel_per_element_tiled(float in[], float out[])
 因为如果将in的图片块读取到共享内存需要一次同步线程，执行转置后也需要一次。
 
 优化到这里还没有结束。实际运行后用NVVP检查效果，发现global load/store efficiency 都为100%，但是DRAM utilization 很低。注意到Shared memory replay overhead却比较高。
-
----
 
 ### 从little's Law中找继续优化的方法
 
@@ -178,8 +175,6 @@ GPU的Little’s law就是在GPU中把一块数据从SM移动到DRAM中，或从
 | parallel per element | 0.67ms   |
 | tiled (K = 16)       | 0.52ms   |
 
----
-
 ### SM中的occupancy占用率
 
 什么限制了一个SM中线程块的数量？先看看占用率occupancy。每个SM中的下列资源数量是有限的：
@@ -224,5 +219,19 @@ GPU的Little’s law就是在GPU中把一块数据从SM移动到DRAM中，或从
 ![img](/img/in-post/branch.jpg)
 
 若非分支操作，各线程在时间维度上在一组warp中整齐排列；而对于分支操作，一组warp中部分线程执行if分支，另一部分执行else分支，如图所示就将并行度打破，使时间拉长，存在一些线程空闲而另一些线程在执行的浪费，这就叫做**线程发散**。若无嵌套的if，else，称为2路发散，否则有4路、8路等，会花更长时间。
+
+对于一个包含1024个线程的线程块，最大的线程分散penalty是多少？答案是32倍的时间浪费。原因是一个warp只有32个线程，在这种最坏的情况下，一个线程执行一个分支。比如switch中带有大于等于32个case的情况。
+
+减小分支分散需要从算法设计上改进，有几个原则可以注意：
+
+- 尽量避免分支代码，避免使相邻线程采用大量不同分支；
+- 尽量避免线程工作量间的不平衡，小心使用循环、递归这类代码。
+
+### 选择效率更高的数学计算——提升“最后一点性能”
+
+这些trick用来提升最后一点性能：
+
+- 只在有需要时才用双精度运算，如`float a = b + 2.5`就没有`float a = b + 2.5f`性能好，因为GPU中`2.5`默认为双精度，但这里仅需要`2.5f`就可以。
+- 可以使用内部函数 (intrinsic functions)，如__sin(), __cos(), __exp()，都为单精度输入输出，可能精度比math.h低，但快很多。
 
 ---
