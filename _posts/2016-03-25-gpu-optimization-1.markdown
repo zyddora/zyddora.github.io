@@ -46,6 +46,8 @@ tags:
 
 **GPU程序优化是一种系统优化过程——APOD！**
 
+![img](/img/in-post/apod.jpg)
+
 - **A – analyze**
   * profile whole application, where can it benefit? By how much?
   * 分析整体，弄清两个问题：

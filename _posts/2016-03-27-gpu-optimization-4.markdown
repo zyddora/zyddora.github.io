@@ -14,12 +14,12 @@ tags:
 
 ### Catalog
 
-1. [Host-Device(GPU)的交互](#host-device-gpu)
+1. [Host(CPU)-Device(GPU)的交互](#host-cpu-device-gpu)
 2. [流 Stream](#stream)
 3. [GPU优化总结](#gpu)
 
 
-## Host-Device(GPU)的交互
+## Host(CPU)-Device(GPU)的交互
 
 ![img](/img/in-post/gpu_pcie.jpg)
 
