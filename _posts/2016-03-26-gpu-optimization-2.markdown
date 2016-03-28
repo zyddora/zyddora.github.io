@@ -17,10 +17,10 @@ tags:
 ### Catalog
 
 1. [矩阵转置程序目的](#section)
-2. [C代码实现——串行代码](#section)
-3. [第1个cuda版本实现——简单GPU代码](#section)
-4. [第2个cuda版本实现——对行并行化](#section)
-5. [第3个cuda版本实现——对各元素并行化](#section)
+2. [C代码实现——串行代码](#c)
+3. [第1个cuda版本实现——简单GPU代码](#cudagpu)
+4. [第2个cuda版本实现——对行并行化](#cuda)
+5. [第3个cuda版本实现——对各元素并行化](#cuda-1)
 
 
 ## 矩阵转置程序目的
@@ -93,12 +93,12 @@ int main(int argc, char **argv)
 
   GpuTimer timer;
   timer.Start();
-  transpose_serial\<\<\<1, 1>>>(d_in, d_out); // launch kernel
+  transpose_serial<<<1, 1>>>(d_in, d_out); // launch kernel
   timer.Stop();
 
   cudaMemcpy(out, d_out, numbytes, cudaMemcpyDeviceToHost);
 
-  printf(“transpose_serial: %g ms.\n”, timer.Elapsed());
+  printf("transpose_serial: %g ms.\n", timer.Elapsed());
 }
 ```
 
@@ -126,7 +126,7 @@ __gloabl__ void transpose_parallel_per_row(float in[], float out[])
 }
 ```
 
-用`transpose_parallel_per_row\<\<\<1,N>>>(d_in, d_out)`调用该新kernel函数，看看时间运行效果，可以发现有了一定的提升。这说明我们优化的方向是正确的。^-^  **为方便起见，在下文中给出每个cuda代码的具体运行时间对比，此处暂不列出。**
+用`transpose_parallel_per_row<<<1,N>>>(d_in, d_out)`调用该新kernel函数，看看时间运行效果，可以发现有了一定的提升。这说明我们优化的方向是正确的。^-^  **为方便起见，在下文中给出每个cuda代码的具体运行时间对比，此处暂不列出。**
 
 ---
 
@@ -154,7 +154,7 @@ __global__ void transpose_parallel_per_element(float in[], float out[])
 dim3 blocks(N/K, N/K); // blocks per grid
 dim3 threads(K, K); // threads per blocks
 
-transpose_parallel_per_element\<\<\<blocks, threads>>>(d_in, d_out);
+transpose_parallel_per_element<<<blocks, threads>>>(d_in, d_out);
 ```
 
 这里假设N是K的整数倍。注意到与上例不同的是，此次要计算i和j的具体值，因为它们与区块索引`blockIdx.x/y`、线程索引`threadIdx.x/y`相关。经过测试，用时又一次下降，说明增加并行性确实有助于代码运行的效率提升。

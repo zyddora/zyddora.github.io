@@ -21,9 +21,9 @@ tags:
   - [coalesce合并](#coalesce)
   - [从little's Law中找继续优化的方法](#littles-law)
   - [SM中的occupancy占用率](#smoccupancy) 
-4. [优化代码计算性能](#smoccupancy)
-  - [减小线程发散度](#)
-  - [选择效率更高的数学计算](#)
+4. [优化代码计算性能](#section-3)
+  - [减小线程发散度](#section-4)
+  - [选择效率更高的数学计算](#section-5)
 
 
 ## 已经达到极限了？
