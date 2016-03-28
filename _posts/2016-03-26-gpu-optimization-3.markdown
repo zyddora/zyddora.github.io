@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "GPU程序优化（三）——矩阵转置程序优化（进阶版）"
+title:      "GPU程序优化（三）——矩阵转置程序优化实例（进阶版）"
 subtitle:   ""
 date:       2016-03-27 11:39:00
 author:     "Orchid"
@@ -16,10 +16,12 @@ tags:
 
 1. [已经达到极限了？](#section)
 2. [影响代码性能的两个主要方面](#section-1)
-3. [看代码内存操作是否有效——DRAM utilization](#dram-utilization)
-4. [coalesce合并](#coalesce)
-5. [从little's Law中找继续优化的方法](#littles-Law)
-6. [SM中的occupancy占用率](#smoccupancy)
+3. [优化代码内存操作](#section-2)
+  - [看代码内存操作是否有效——DRAM utilization](#dram-utilization)
+  - [coalesce合并](#coalesce)
+  - [从little's Law中找继续优化的方法](#littles-Law)
+  - [SM中的occupancy占用率](#smoccupancy) 
+4. [优化代码计算性能](#smoccupancy)
 
 
 ## 已经达到极限了？
@@ -43,7 +45,9 @@ tags:
 
 ---
 
-## 看代码内存操作是否有效——DRAM utilization
+## 优化代码内存操作
+
+### 看代码内存操作是否有效——DRAM utilization
 
 下面的几个参数是我们能通过device Query查询得到的，也是计算内存读取相关参数的依据：
 
@@ -82,7 +86,7 @@ tags:
 
 ---
 
-## coalesce合并
+### coalesce合并
 
 下面来思考一下可能的解决办法。一般来说，会想到coalesce合并。
 
@@ -128,7 +132,7 @@ __global__ void transpose_parallel_per_element_tiled(float in[], float out[])
 
 ---
 
-## 从little's Law中找继续优化的方法
+### 从little's Law中找继续优化的方法
 
 先回顾一下优化时关注内存的原因——使用GPU加速代码运行。而GPU之所以具备这样的能力有以下原因：
 
@@ -175,7 +179,7 @@ GPU的Little’s law就是在GPU中把一块数据从SM移动到DRAM中，或从
 
 ---
 
-## SM中的occupancy占用率
+### SM中的occupancy占用率
 
 什么限制了一个SM中线程块的数量？先看看占用率occupancy。每个SM中的下列资源数量是有限的：
 
