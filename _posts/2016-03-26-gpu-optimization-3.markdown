@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:      "GPU程序优化（二）——矩阵转置程序优化实例"
+title:      "GPU程序优化（三）——矩阵转置程序优化（进阶版）"
 subtitle:   ""
-date:       2016-03-26 13:46:00
+date:       2016-03-27 11:39:00
 author:     "Orchid"
 header-img: "img/post-bg-cuda.jpg"
 tags:
@@ -15,11 +15,11 @@ tags:
 ### Catalog
 
 1. [已经达到极限了？](#section)
-2. [影响代码性能的两个主要方面](#section)
-3. [看代码内存操作是否有效——DRAM utilization](#section)
-4. [coalesce合并](#section)
-5. [从little's Law中找继续优化的方法](#section)
-6. [SM中的occupancy占用率](#section)
+2. [影响代码性能的两个主要方面](#section-1)
+3. [看代码内存操作是否有效——DRAM utilization](#dram-utilization)
+4. [coalesce合并](#coalesce)
+5. [从little's Law中找继续优化的方法](#littles-Law)
+6. [SM中的occupancy占用率](#smoccupancy)
 
 
 ## 已经达到极限了？
@@ -62,9 +62,9 @@ tags:
 
 一条经验法则是，如果实际内存带宽：
 
-达到理论内存带宽的40%~60% -> okay；
-达到理论内存带宽的60%~75% -> good；
-达到理论内存带宽的75% -> excellent。
+- 达到理论内存带宽的40%~60% -> okay；
+- 达到理论内存带宽的60%~75% -> good；
+- 达到理论内存带宽的75% -> excellent。
 
 实际上，真正的代码会有额外开销，永远无法达到此理论峰值带宽。
 
@@ -73,7 +73,7 @@ tags:
 实际Kernel达到的带宽（假设运行时间为0.67ms，N = 1024）：`1024*1024*4（4字节数据）*2（2次读写内存）/0.67e-3 = 12.5GB/s`。可以看到，与40.128GB/s上相比，效果并不是很好。
 
 | Code version         | Time     | real BW    | DRAM utilization  |
-| -------------------- |:--------:|:----------:| -----------------:|
+| -------------------- |:--------:|:----------:|:-----------------:|
 | serial               | 466ms    | 0.018GB/s  | < 0.1%            |
 | parallel per row     | 4.7ms    | 1.8GB/s    | 4.5%              |
 | parallel per element | 0.67ms   | 12.5GB/s   | 31.1%             |
@@ -167,7 +167,7 @@ GPU的Little’s law就是在GPU中把一块数据从SM移动到DRAM中，或从
 根据减少平均延迟的方法，不妨可以尝试减少一个线程块中的线程数。把K = 32改为16得到的结果显示确实更好了些。感兴趣的话可以尝试K = 8等。
 
 | Code version         | Time     |
-| -------------------- | --------:|
+| -------------------- |:--------:|
 | serial               | 466ms    |
 | parallel per row     | 4.7ms    |
 | parallel per element | 0.67ms   |
@@ -186,9 +186,14 @@ GPU的Little’s law就是在GPU中把一块数据从SM移动到DRAM中，或从
 
 用CUDA SDK调用device Query能方便采集上述信息。通过它们可以计算每个SM上运行的线程数量，也可以得到限制性能的主要矛盾。
 
-在我们的例子中，kernel要求1024个线程，而一个SM支持最多2048个，也就是本例仅使用了一个SM中的2个线程块，而限制了使用更多（最多8个）。这里注意occupancy是和GPU平台强相关的，换一个平台上述信息得重新获得和评估。
+在我们的例子中，kernel要求1024个线程，而一个SM支持最多2048个，也就是本例仅使用了一个SM中的2个线程块，而限制了使用更多（最多8个）。这里注意occupancy是和GPU平台强相关的，换一个平台上述信息得重新获得和评估。下表给出了程本序在多个平台下的occupancy示例：
 
-影响kernel occupancy的手段：
+| Platform  | max threads running | max threads possible    | occupancy  |
+| --------- |:-------------------:|:-----------------------:|:----------:|
+| Laptop    | 2048                | 2048                    | 100%       |
+| Fermi     | 1024                | 1536                    | 66%        |
+
+改变kernel函数 occupancy的方法：
 
 - 控制一个线程块需要的共享内存（修改图块大小）；
 - 修改启动kernel时的线程（块）数量；
