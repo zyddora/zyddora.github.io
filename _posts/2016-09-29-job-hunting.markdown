@@ -1,22 +1,16 @@
 ---
 layout:     post
-title:      "众里寻他千百度"
-subtitle:   "求职心路"
-date:       2016-09-28 10:39:00
+title:      "求职心路：恰逢其时遇见你"
+subtitle:   ""
+date:       2016-09-29 22:39:00
 author:     "Orchid"
 header-img: "img/post-bg-scene1.jpg"
 tags:
     - 谈天说地
+    - 面试/笔试
 ---
 
-> 本文是**GPU并行程序优化**系列的第四部分，探究系统级相关的优化技巧。请参见“GPU程序优化”系列之前的文章。建议有一定的CUDA编程基础，再来阅读文本。
-
-### Catalog
-
-1. [Host(CPU)-Device(GPU)的交互](#host-cpu-device-gpu)
-2. [流 Stream](#stream)
-3. [GPU优化总结](#gpu)
-
+> 六余年步步磨砺，终见分晓。徘徊在大学与职场的交界线，愿我
 
 ## Host(CPU)-Device(GPU)的交互
 
