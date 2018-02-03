@@ -1,16 +1,12 @@
-#Orchid Blog
+# Orchid Blog
 
-###[View Orchid Blog ](http://zyddora.github.io)
+### [View Orchid Blog ](https://zyddora.github.io)
 
-###Brief Intro
+### Brief Intro
 
-This is my blog(orchid)
+This is my blog(orchid), with some tech notes and personal life.
 
-I will post some researches of Machine Learning or Wireless Communications, also my recent life log.
-
-Hope you enjoy it! 
-
-## Thanks to
+### Thanks to
 
 This theme is forked from [Hux Blog](https://github.com/Huxpro/huxpro.github.io.git)  
 

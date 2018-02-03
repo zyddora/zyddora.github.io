@@ -3,9 +3,9 @@ title: Orchid Blog
 SEOTitle: Orchid Blog
 header-img: img/home-bg_meitu_1.jpg
 email: zyddora@gmail.com
-description: " 这里是 @Orchid张也冬的个人博客。"
-keyword: "Orchid, Orchid Blog, 博客, 个人网站, 互联网, 人工智能, 机器学习, 自然语言处理"
-url: "http://zyddora.github.io"              # your host, for absolute URL
+description: "Love Tech, love Art."
+keyword: "Orchid, Orchid Blog, 博客, 个人网站, 互联网, 人工智能, 机器学习"
+url: "https://zyddora.github.io"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
 
@@ -13,18 +13,27 @@ baseurl: ""                             # for example, '/blog' if your blog host
 # SNS settings
 RSS: false
 weibo_username:     u/1058773570
-facebook_username:  zyddora 
-github_username:    zyddora 
-#twitter_username:  huxpro
+zhihu_username:     yd-zhang-58
+github_username:    zyddora
+twitter_username:   zyddora
+facebook_username:  zyddora
+linkedin_username:  yedong-zhang-83836870/
 
 
 
 # Build settings
+# from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
 highlighter: rouge
 permalink: pretty
 paginate: 10
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","README.zh.md"]
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
+
+
+
+# Gems
+# from PR#40, to support local preview for Jekyll 3.0
+gems: [jekyll-paginate]
 
 
 
@@ -39,60 +48,76 @@ kramdown:
 
 
 # Disqus settings
-#disqus_username: _your_disqus_short_name_
+disqus_username: Orchid
 
-# Duoshuo settings
-duoshuo_username: orchid 
-# Share component is depend on Comment so we can NOT use share only.
-duoshuo_share: true                     # set to false if you want to use Comment without Sharing
-
+# Netease setttings
+netease_comment: false
 
 
 
 # Analytics settings
-# Baidu Analytics
-#ba_track_id: 4cc1f2d8f3067386cc5cdb626a202900
+# Baidu Analytics 
+# ba_track_id: [your track id]
+
 # Google Analytics
-#ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-#ga_domain: huangxuan.me
+ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
+ga_domain: huangxuan.me
 
 
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "与善人居，如入芝兰之室，久而不闻其香，即与之化矣。"
+sidebar-about-description: "与善人居，如入芝兰之室，久而不闻其香，即与之化矣"
 sidebar-avatar: /img/avatar-orchid.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
 # Featured Tags
 featured-tags: true                     # whether or not using Feature-Tags
-featured-condition-size: 0              # A tag will be featured if the size of it is more than this condition value
+featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
+
+
+
+# Progressive Web Apps
+chrome-tab-theme-color: "#000000"
+service-worker: true
 
 
 
 # Friends
-#friends: [
-#    {
-#        title: "天镶的博客",
-#        href: "http://lingyu.wang/"
-#    },{
-#        title: "Luke的自留地",
-#        href: "http://hmqk1995.github.io"
-#    },{
-#        title: "SmdCn's Blog",
-#        href: "http://blog.smdcn.net"
-#    },{
-#        title: "解旻的博客",
-#        href: "http://xieminis.me/"
-#    },{
-#        title: "DHong Say",
-#        href: "http://dhong.co"
-#    },{
-#        title: "尹峰以为",
-#        href: "http://ingf.github.io/"
-#    }
-#]
-
-#extra setting 
-encoding: utf-8
+# friends: [
+#     {
+#     #     title: "Su",
+#     #     href: "http://su.gallery/"
+#     # },{
+#         title: "乱序",
+#         href: "http://mida.re/"
+#     },{
+#         title: "前端外刊评论",
+#         href: "http://qianduan.guru/"
+#     },{
+#         title: "天镶的博客",
+#         href: "http://lingyu.wang/"
+#     },{
+#         title: "Luke 的自留地",
+#         href: "http://hmqk1995.github.io"
+#     },{
+#         title: "Ebn's Blog",
+#         href: "http://ebnbin.com/"
+#     },{
+#         title: "SmdCn's Blog",
+#         href: "http://blog.smdcn.net"
+#     },{
+#         title: "解旻的博客",
+#         href: "http://xieminis.me/"
+#     },{
+#         title: "DHong Say",
+#         href: "http://dhong.co"
+#     },{
+#         title: "尹峰以为",
+#         href: "http://ingf.github.io/"
+#     },{
+#         title: "前端神盾局",
+#         href: "http://wepiaofei.github.io/blog/"
+#     }
+# ]
