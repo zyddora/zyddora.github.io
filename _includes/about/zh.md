@@ -3,12 +3,12 @@
 
 我是Yedong Orchid Zhang (張 也冬)，目前于[阿里云](https://www.aliyun.com/)任职研发工程师，从事机器学习，人工智能在云上的多种应用。曾在[地平线机器人](http://www.horizon-robotics.com/)实习，开发/优化异构并行算法。也有无线通信领域算法研究、嵌入式开发等经历。热爱并坚持艺术领域的爱好，音乐、书法、舞蹈。
 
-欢迎关注我的个人社交账号
+欢迎关注我的个人社交账号：
 
-[Linkedin](https://www.linkedin.com/in/yedong-zhang-83836870/)
-[Weibo](https://weibo.com/u/1058773570)
-[Zhihu](https://www.zhihu.com/people/yd-zhang-58/)
-[Instagram](https://www.instagram.com/zyddora/)
+> + [@Linkedin](https://www.linkedin.com/in/yedong-zhang-83836870/)
+> + [@Weibo](https://weibo.com/u/1058773570)
+> + [@Zhihu](https://www.zhihu.com/people/yd-zhang-58/)
+> + [@Instagram](https://www.instagram.com/zyddora/)
 
 
 ##### Talks
