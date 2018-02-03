@@ -1,7 +1,7 @@
 # Site settings
 title: Orchid Blog
 SEOTitle: Orchid Blog
-header-img: img/home-bg_meitu_1.jpg
+header-img: img/image_home_bg.jpg
 email: zyddora@gmail.com
 description: "Love Tech, love Art."
 keyword: "Orchid, Orchid Blog, 博客, 个人网站, 互联网, 人工智能, 机器学习"
@@ -68,7 +68,7 @@ ga_domain: huangxuan.me
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "与善人居，如入芝兰之室，久而不闻其香，即与之化矣"
-sidebar-avatar: /img/avatar-orchid.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/avatar-orchid-2.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
