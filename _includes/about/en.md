@@ -3,6 +3,12 @@
 
 I am *@Orchid* (Yedong Zhang), a research and development engineer at [@Alibaba Cloud](https://www.alibabacloud.com/), focusing on machine learning and aritificial intelligence applications. I previously worked as parallel algorithm engineer (Intern) at [@Horizon Robotics](http://en.horizon.ai/). Have a fancy for music, calligraphy and dance.
 
+Please contact me if you need to use my articles, please mail to `zyddora at gmail dot com`.
+
+##### Contact
+
++ Linkedin: [Yedong Zhang](https://www.linkedin.com/in/yedong-zhang-83836870/)
++ Instagram: [zyddora](https://www.instagram.com/zyddora/)
 
 ##### Talks
 
